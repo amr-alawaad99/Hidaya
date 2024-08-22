@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Constants{
-  static Color primaryColor = const Color(0xFF13a795);
+  static Color primaryColor = const Color(0xff149d9d);
 
   static TextStyle headingTitle1 = TextStyle(
     fontSize: 40.sp,

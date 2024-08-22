@@ -3,10 +3,14 @@ import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:hadith_reminder/cache/cache_helper.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 
 import '../constants/constants.dart';
+import '../generated/l10n.dart';
 
 class PrayersWidget extends StatefulWidget {
   const PrayersWidget({super.key});
@@ -22,11 +26,14 @@ class _PrayersWidgetState extends State<PrayersWidget> {
   final _params = CalculationMethod.egyptian.getParameters();
   late final _prayerTimes = PrayerTimes.today(_myCoordinates, _params);
   late DateTime _targetTime;
+  final DateTime nextDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1);
+  late final DateTime _nextFajr = PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).fajr;
 
   @override
   void initState() {
     super.initState();
     _params.madhab = Madhab.shafi;
+    _checkCurrentLocation();
     _updateRemainingTime();
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       _updateRemainingTime();
@@ -35,7 +42,11 @@ class _PrayersWidgetState extends State<PrayersWidget> {
   void _updateRemainingTime() {
     setState(() {
       DateTime currentTime = DateTime.now();
-      _targetTime =  _prayerTimes.timeForPrayer(_prayerTimes.nextPrayer())!;
+      if(_prayerTimes.nextPrayer() == Prayer.none){
+        _targetTime =  _nextFajr;
+      } else {
+        _targetTime =  _prayerTimes.timeForPrayer(_prayerTimes.nextPrayer())!;
+      }
       _remainingTime = _targetTime.difference(currentTime);
     });
   }
@@ -44,41 +55,156 @@ class _PrayersWidgetState extends State<PrayersWidget> {
     _timer.cancel();
     super.dispose();
   }
+
+
+  String _address = 'Fetching location...';
+  double? lat = CacheHelper().getData(key: "lat");
+  double? lang = CacheHelper().getData(key: "lang");
+  List<Placemark>? placeMarks = [];
+
+  Placemark? place;
+  Future<void> _checkCurrentLocation() async {
+    if(lat == null){
+      _getCurrentLocation();
+    } else {
+      print("$lat , $lang");
+      List<Placemark> placeMarks = await placemarkFromCoordinates(
+        lat!,
+        lang!,
+      );
+      Placemark place = placeMarks[0];
+      setState(() {
+        _address = "${place.locality}, ${place.administrativeArea}";
+      });
+    }
+  }
+
+
+  Future<void> _getCurrentLocation() async {
+    print("Checking address!!!!");
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled, handle appropriately
+      setState(() {
+        _address = 'Location services are disabled.';
+      });
+      return;
+    }
+
+    // Request location permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, handle appropriately
+        setState(() {
+          _address = 'Location permissions are denied';
+        });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately
+      setState(() {
+        _address = 'Location permissions are permanently denied';
+      });
+      return;
+    }
+
+    // Get the current position
+    Position position = await Geolocator.getCurrentPosition();
+
+    //Save position in cache memory
+    CacheHelper().saveData(key: "lat", value: position.latitude);
+    CacheHelper().saveData(key: "lang", value: position.longitude);
+
+    // Get address from the coordinates
+    List<Placemark> placeMarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
+
+    Placemark place = placeMarks[0];
+
+    setState(() {
+      _address = "${place.locality}, ${place.administrativeArea}";
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
-
+    HijriCalendar.setLocal(S.of(context).DateLang);
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(image: AssetImage("assets/images/background.png"),
         fit: BoxFit.cover,
-        alignment: Alignment.bottomCenter)
+        alignment: Alignment.bottomCenter),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
       ),
       padding: EdgeInsets.all(15.sp),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: MediaQuery.of(context).padding.top,),
-          Align(alignment: Alignment.topRight,child: Text(HijriCalendar.now().toFormat("dd MMMM yyyy هـ"), style: Constants.headingTitle2,),),
+          Text(HijriCalendar.now().toFormat("dd MMMM yyyy ${S.of(context).Hijri}"), style: Constants.headingTitle2,),
+          SizedBox(height: 0.h,),
+          /// Address
+          Row(
+            children: [
+              /// Address
+              SizedBox(
+                width: 200,
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: Text(_address, style: Constants.headingCaption,),
+                ),
+              ),
+              SizedBox(width: 10.w,),
+              /// reload address button
+              GestureDetector(
+                onTap: () async {
+                  _getCurrentLocation();
+                  },
+                child: Icon(TablerIcons.repeat, color: Colors.white, size: 15.sp,),
+              ),
+            ],
+          ),
           SizedBox(height: 30.h,),
-          Text(arPrayerName(_prayerTimes.nextPrayer().name), style: Constants.headingCaption,),
-          Text(DateFormat.jm("ar").format(_prayerTimes.timeForPrayer(_prayerTimes.nextPrayer())!), style: Constants.headingTitle1,),
-          Text("متبقي "
-              "${_remainingTime.inHours > 0? "${_remainingTime.inHours} ساعة " : ""}"
-              "${_remainingTime.inMinutes > 0? "${_remainingTime.inMinutes % 60} دقيقة " : ""}"
-              "${_remainingTime.inHours == 0? "${_remainingTime.inSeconds % 60} ثانية " : ""}",
-          style: Constants.headingCaption,),
+          /// Next prayer, it's time, and how much time left
+          Center(
+            child: Column(
+              children: [
+                Text(arPrayerName(_prayerTimes.nextPrayer().name == Prayer.none.name? Prayer.fajr.name : _prayerTimes.nextPrayer().name, context), style: Constants.headingCaption,),
+                Text(DateFormat.jm(S.of(context).DateLang).format(_prayerTimes.timeForPrayer(_prayerTimes.nextPrayer())?? _nextFajr), style: Constants.headingTitle1,),
+                Text("${S.of(context).TimeLeft} "
+                    "${_remainingTime.inHours > 0? "${_remainingTime.inHours} ${S.of(context).Hour}${_remainingTime.inHours > 1 && S.of(context).DateLang == "en"? 's':''} " : ""}"
+                    "${_remainingTime.inMinutes > 0? "${_remainingTime.inMinutes % 60} ${S.of(context).Minute}${_remainingTime.inMinutes > 1 && S.of(context).DateLang == "en"? 's':''} " : ""}"
+                    "${_remainingTime.inHours == 0? "${_remainingTime.inSeconds % 60} ${S.of(context).Second}${_remainingTime.inSeconds > 1 && S.of(context).DateLang == "en"? 's':''} " : ""}",
+                  style: Constants.headingCaption,),
+              ],
+            ),
+          ),
           SizedBox(height: 30.h,),
+          /// Each prayer name, icon, and time
           Row(
             children: [
               const Spacer(),
-              prayerTimeCard(_prayerTimes.isha, "العشاء", TablerIcons.moon),
+              prayerTimeCard(_prayerTimes.fajr, S.of(context).Fajr, TablerIcons.sun_moon, context),
               const Spacer(),
-              prayerTimeCard(_prayerTimes.maghrib, "المغرب", TablerIcons.sunset),
+              prayerTimeCard(_prayerTimes.dhuhr, S.of(context).Dhuhr, TablerIcons.sun_filled, context),
               const Spacer(),
-              prayerTimeCard(_prayerTimes.asr, "العصر", TablerIcons.sunset_2),
+              prayerTimeCard(_prayerTimes.asr, S.of(context).Asr, TablerIcons.sunset_2, context),
               const Spacer(),
-              prayerTimeCard(_prayerTimes.dhuhr, "الظهر", TablerIcons.sun_filled),
+              prayerTimeCard(_prayerTimes.maghrib, S.of(context).Maghrib, TablerIcons.sunset, context),
               const Spacer(),
-              prayerTimeCard(_prayerTimes.fajr, "الفجر", TablerIcons.sun_moon),
+              prayerTimeCard(_prayerTimes.isha, S.of(context).Isha, TablerIcons.moon, context),
               const Spacer(),
             ],
           ),
@@ -89,28 +215,26 @@ class _PrayersWidgetState extends State<PrayersWidget> {
   }
 }
 
-String arPrayerName(String enPrayerName){
+String arPrayerName(String enPrayerName, context){
   switch(enPrayerName){
-    case "fajr": return "الفجر";
-    case "dhuhr": return "الظهر";
-    case "asr": return "العصر";
-    case "maghrib": return "المغرب";
-    case "isha": return "العشاء";
+    case "fajr": return S.of(context).Fajr;
+    case "dhuhr": return S.of(context).Dhuhr;
+    case "asr": return S.of(context).Asr;
+    case "maghrib": return S.of(context).Maghrib;
+    case "isha": return S.of(context).Isha;
     default: return "";
   }
 }
 
-Widget prayerTimeCard(DateTime? prayerTime , String prayerName, IconData icon) => Container(
-  child: Column(
-    children: [
-      Text(prayerName, style: Constants.headingSmall,),
-      Padding(
-        padding: const EdgeInsets.all(10),
-        child: Icon(icon, color: Colors.white, size: 30.sp,),
-      ),
-      Text(DateFormat.jm("ar").format(prayerTime!), style: Constants.headingSmall,)
-    ],
-  ),
+Widget prayerTimeCard(DateTime? prayerTime , String prayerName, IconData icon, context) => Column(
+  children: [
+    Text(prayerName, style: Constants.headingSmall,),
+    Padding(
+      padding: const EdgeInsets.all(10),
+      child: Icon(icon, color: Colors.white, size: 30.sp,),
+    ),
+    Text(DateFormat.jm(S.of(context).DateLang).format(prayerTime!), style: Constants.headingSmall,)
+  ],
 );
 
 

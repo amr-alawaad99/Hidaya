@@ -1,0 +1,14 @@
+{
+  "DateLang" : "en",
+  "Hijri" : "H",
+  "Fajr" : "Fajr",
+  "Dhuhr" : "Dhuhr",
+  "Asr" : "Asr",
+  "Maghrib" : "Maghrib",
+  "Isha" : "Isha",
+  "TimeLeft" : "Time left",
+  "Hour" : "Hour",
+  "Minute" : "Minute",
+  "Second" : "Second"
+
+}
