@@ -1,14 +1,16 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hadith_reminder/cache/cache_helper.dart';
+import 'package:hadith_reminder/cubit/main_cubit.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
-
 import '../constants/constants.dart';
 import '../generated/l10n.dart';
 
@@ -22,9 +24,11 @@ class PrayersWidget extends StatefulWidget {
 class _PrayersWidgetState extends State<PrayersWidget> {
   late Timer _timer;
   Duration _remainingTime = Duration.zero;
-  final _myCoordinates = Coordinates(31.058291, 31.379174); // Replace with your own location lat, lng.
-  final _params = CalculationMethod.egyptian.getParameters();
-  late final _prayerTimes = PrayerTimes.today(_myCoordinates, _params);
+  double? lat = CacheHelper().getData(key: "lat");
+  double? long = CacheHelper().getData(key: "long");
+  late Coordinates _myCoordinates = Coordinates(lat?? 30.033333,long?? 31.233334); // Replace with your own location lat, lng.
+  final _params = CalculationMethod.north_america.getParameters();
+  late  PrayerTimes _prayerTimes = PrayerTimes.today(_myCoordinates, _params);
   late DateTime _targetTime;
   final DateTime nextDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1);
   late final DateTime _nextFajr = PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).fajr;
@@ -57,9 +61,8 @@ class _PrayersWidgetState extends State<PrayersWidget> {
   }
 
 
-  String _address = 'Fetching location...';
-  double? lat = CacheHelper().getData(key: "lat");
-  double? lang = CacheHelper().getData(key: "lang");
+  final String locale = PlatformDispatcher.instance.locales.first.languageCode;
+  late String _address = locale == "ar"? "القاهرة - مصر" : "Cairo - Egypt";
   List<Placemark>? placeMarks = [];
 
   Placemark? place;
@@ -67,10 +70,10 @@ class _PrayersWidgetState extends State<PrayersWidget> {
     if(lat == null){
       _getCurrentLocation();
     } else {
-      print("$lat , $lang");
+      print("$lat , $long");
       List<Placemark> placeMarks = await placemarkFromCoordinates(
         lat!,
-        lang!,
+        long!,
       );
       Placemark place = placeMarks[0];
       setState(() {
@@ -79,9 +82,7 @@ class _PrayersWidgetState extends State<PrayersWidget> {
     }
   }
 
-
   Future<void> _getCurrentLocation() async {
-    print("Checking address!!!!");
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -101,18 +102,15 @@ class _PrayersWidgetState extends State<PrayersWidget> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         // Permissions are denied, handle appropriately
-        setState(() {
-          _address = 'Location permissions are denied';
-        });
+        print('Location permissions are denied');
         return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately
-      setState(() {
-        _address = 'Location permissions are permanently denied';
-      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).PermissionDeniedMessage)));
+      print('Location permissions are permanently denied');
       return;
     }
 
@@ -121,7 +119,13 @@ class _PrayersWidgetState extends State<PrayersWidget> {
 
     //Save position in cache memory
     CacheHelper().saveData(key: "lat", value: position.latitude);
-    CacheHelper().saveData(key: "lang", value: position.longitude);
+    CacheHelper().saveData(key: "long", value: position.longitude);
+    setState(() {
+      lat = CacheHelper().getData(key: "lat");
+      long = CacheHelper().getData(key: "long");
+      _myCoordinates = Coordinates(lat!, long!);
+      _prayerTimes = PrayerTimes.today(_myCoordinates, _params);
+    });
 
     // Get address from the coordinates
     List<Placemark> placeMarks = await placemarkFromCoordinates(
@@ -132,7 +136,7 @@ class _PrayersWidgetState extends State<PrayersWidget> {
     Placemark place = placeMarks[0];
 
     setState(() {
-      _address = "${place.locality}, ${place.administrativeArea}";
+      _address = "${place.administrativeArea}, ${place.country}";
     });
   }
 
@@ -153,7 +157,20 @@ class _PrayersWidgetState extends State<PrayersWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: MediaQuery.of(context).padding.top,),
-          Text(HijriCalendar.now().toFormat("dd MMMM yyyy ${S.of(context).Hijri}"), style: Constants.headingTitle2,),
+          Row(
+            children: [
+              Expanded(child: Text(HijriCalendar.now().toFormat("dd MMMM yyyy ${S.of(context).Hijri}"), style: Constants.headingTitle2,)),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    print(context.read<MainCubit>().localLang);
+                    context.read<MainCubit>().changeLocalLang();
+                  });
+                },
+                child: Text(S.of(context).DateLang.toUpperCase()),
+              ),
+            ],
+          ),
           SizedBox(height: 0.h,),
           /// Address
           Row(
@@ -169,7 +186,7 @@ class _PrayersWidgetState extends State<PrayersWidget> {
               SizedBox(width: 10.w,),
               /// reload address button
               GestureDetector(
-                onTap: () async {
+                onTap: () {
                   _getCurrentLocation();
                   },
                 child: Icon(TablerIcons.repeat, color: Colors.white, size: 15.sp,),

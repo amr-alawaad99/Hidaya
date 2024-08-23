@@ -17,5 +17,11 @@ class MainCubit extends Cubit<MainState> {
     return hadithMapModel;
   }
 
+  String localLang = "ar";
+  void changeLocalLang(){
+    localLang == "ar"? localLang = "en" : localLang = "ar";
+    emit(MainInitState());
+  }
+
 
 }

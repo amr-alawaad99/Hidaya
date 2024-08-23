@@ -31,6 +31,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Isha": MessageLookupByLibrary.simpleMessage("Isha"),
         "Maghrib": MessageLookupByLibrary.simpleMessage("Maghrib"),
         "Minute": MessageLookupByLibrary.simpleMessage("Minute"),
+        "PermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
+            "Location permissions are denied, please allow location access from the app settings"),
         "Second": MessageLookupByLibrary.simpleMessage("Second"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("Time left")
       };

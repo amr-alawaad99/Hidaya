@@ -11,31 +11,28 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MainCubit(),
-      child: BlocConsumer<MainCubit, MainState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const PrayersWidget(),
-                    Container(
-                      height: 2000.h,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-                      ),
-                      // Add other widgets here if needed
+    return BlocConsumer<MainCubit, MainState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const PrayersWidget(),
+                  Container(
+                    height: 2000.h,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
                     ),
-                  ],
-                ),
+                    // Add other widgets here if needed
+                  ),
+                ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

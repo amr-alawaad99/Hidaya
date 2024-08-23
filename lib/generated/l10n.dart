@@ -159,6 +159,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Location permissions are denied, please allow location access from the app settings`
+  String get PermissionDeniedMessage {
+    return Intl.message(
+      'Location permissions are denied, please allow location access from the app settings',
+      name: 'PermissionDeniedMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

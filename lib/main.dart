@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hadith_reminder/constants/constants.dart';
+import 'package:hadith_reminder/cubit/main_cubit.dart';
 import 'package:hadith_reminder/generated/l10n.dart';
 import 'package:hadith_reminder/screens/home_screen.dart';
-import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'cache/cache_helper.dart';
@@ -16,8 +17,13 @@ import 'cache/cache_helper.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper().init();
-  await initializeDateFormatting('ar', null);
-  runApp(const MyApp());
+  // await initializeDateFormatting('ar', null);
+  runApp(
+    BlocProvider(
+      create: (context) => MainCubit(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -34,7 +40,7 @@ class MyApp extends StatelessWidget {
       designSize: Size(MediaQuery.of(context).size.width,
           MediaQuery.of(context).size.height),
       builder: (context, child) => MaterialApp(
-        locale: const Locale("ar"),
+        locale: Locale(context.read<MainCubit>().localLang),
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,

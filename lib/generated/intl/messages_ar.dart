@@ -31,6 +31,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Isha": MessageLookupByLibrary.simpleMessage("العشاء"),
         "Maghrib": MessageLookupByLibrary.simpleMessage("المغرب"),
         "Minute": MessageLookupByLibrary.simpleMessage("دقيقة"),
+        "PermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
+            "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق"),
         "Second": MessageLookupByLibrary.simpleMessage("ثانية"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("متبقي")
       };
