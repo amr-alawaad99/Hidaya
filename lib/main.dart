@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
   builder: (context, state) {
     /// ScreenUtilInit for responsive UI
     return ScreenUtilInit(
-      designSize: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
+      designSize: Size(411, 890),
       builder: (context, child) => MaterialApp(
         /// Localization
         locale: Locale(context.read<MainCubit>().localLang),

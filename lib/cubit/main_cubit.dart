@@ -25,5 +25,19 @@ class MainCubit extends Cubit<MainState> {
     emit(ChangeLanguageState());
   }
 
+  Map<String, bool> prayerNotifications = {
+    "fajr": CacheHelper().getData(key: "fajr")?? false,
+    "dhuhr": CacheHelper().getData(key: "dhuhr")?? false,
+    "asr": CacheHelper().getData(key: "asr")?? false,
+    "maghrib": CacheHelper().getData(key: "maghrib")?? false,
+    "isha": CacheHelper().getData(key: "isha")?? false,
+  };
+
+  void toggleSwitch({required String prayerName, required bool isOn}) {
+    prayerNotifications[prayerName] = isOn;
+    CacheHelper().saveData(key: prayerName, value: isOn);
+    emit(ToggleSwitchState());
+  }
+
 
 }

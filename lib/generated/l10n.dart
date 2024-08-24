@@ -170,10 +170,10 @@ class S {
     );
   }
 
-  /// `Notification`
+  /// `Notifications`
   String get PrayerNotification {
     return Intl.message(
-      'Notification',
+      'Notifications',
       name: 'PrayerNotification',
       desc: '',
       args: [],
