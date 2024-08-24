@@ -51,10 +51,10 @@ class S {
   }
 
   /// `en`
-  String get DateLang {
+  String get Language {
     return Intl.message(
       'en',
-      name: 'DateLang',
+      name: 'Language',
       desc: '',
       args: [],
     );
@@ -165,6 +165,16 @@ class S {
     return Intl.message(
       'Location permissions are denied, please allow location access from the app settings',
       name: 'PermissionDeniedMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification`
+  String get PrayerNotification {
+    return Intl.message(
+      'Notification',
+      name: 'PrayerNotification',
       desc: '',
       args: [],
     );

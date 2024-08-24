@@ -23,16 +23,18 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "Asr": MessageLookupByLibrary.simpleMessage("Asr"),
-        "DateLang": MessageLookupByLibrary.simpleMessage("en"),
         "Dhuhr": MessageLookupByLibrary.simpleMessage("Dhuhr"),
         "Fajr": MessageLookupByLibrary.simpleMessage("Fajr"),
         "Hijri": MessageLookupByLibrary.simpleMessage("H"),
         "Hour": MessageLookupByLibrary.simpleMessage("Hour"),
         "Isha": MessageLookupByLibrary.simpleMessage("Isha"),
+        "Language": MessageLookupByLibrary.simpleMessage("en"),
         "Maghrib": MessageLookupByLibrary.simpleMessage("Maghrib"),
         "Minute": MessageLookupByLibrary.simpleMessage("Minute"),
         "PermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
             "Location permissions are denied, please allow location access from the app settings"),
+        "PrayerNotification":
+            MessageLookupByLibrary.simpleMessage("Notification"),
         "Second": MessageLookupByLibrary.simpleMessage("Second"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("Time left")
       };

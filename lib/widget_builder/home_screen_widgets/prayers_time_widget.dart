@@ -11,23 +11,25 @@ import 'package:hadith_reminder/cache/cache_helper.dart';
 import 'package:hadith_reminder/cubit/main_cubit.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
-import '../constants/constants.dart';
-import '../generated/l10n.dart';
 
-class PrayersWidget extends StatefulWidget {
-  const PrayersWidget({super.key});
+import '../../constants/constants.dart';
+import '../../generated/l10n.dart';
+
+
+class PrayersTimeWidget extends StatefulWidget {
+  const PrayersTimeWidget({super.key});
 
   @override
-  State<PrayersWidget> createState() => _PrayersWidgetState();
+  State<PrayersTimeWidget> createState() => _PrayersTimeWidgetState();
 }
 
-class _PrayersWidgetState extends State<PrayersWidget> {
+class _PrayersTimeWidgetState extends State<PrayersTimeWidget> {
   late Timer _timer;
   Duration _remainingTime = Duration.zero;
   double? lat = CacheHelper().getData(key: "lat");
   double? long = CacheHelper().getData(key: "long");
   late Coordinates _myCoordinates = Coordinates(lat?? 30.033333,long?? 31.233334); // Replace with your own location lat, lng.
-  final _params = CalculationMethod.north_america.getParameters();
+  final _params = CalculationMethod.egyptian.getParameters();
   late  PrayerTimes _prayerTimes = PrayerTimes.today(_myCoordinates, _params);
   late DateTime _targetTime;
   final DateTime nextDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1);
@@ -43,6 +45,7 @@ class _PrayersWidgetState extends State<PrayersWidget> {
       _updateRemainingTime();
     });
   }
+
   void _updateRemainingTime() {
     setState(() {
       DateTime currentTime = DateTime.now();
@@ -62,7 +65,7 @@ class _PrayersWidgetState extends State<PrayersWidget> {
 
 
   final String locale = PlatformDispatcher.instance.locales.first.languageCode;
-  late String _address = locale == "ar"? "القاهرة - مصر" : "Cairo - Egypt";
+  late String _address = locale == "ar"? "القاهرة, مصر" : "Cairo, Egypt";
   List<Placemark>? placeMarks = [];
 
   Placemark? place;
@@ -70,14 +73,13 @@ class _PrayersWidgetState extends State<PrayersWidget> {
     if(lat == null){
       _getCurrentLocation();
     } else {
-      print("$lat , $long");
       List<Placemark> placeMarks = await placemarkFromCoordinates(
         lat!,
         long!,
       );
       Placemark place = placeMarks[0];
       setState(() {
-        _address = "${place.locality}, ${place.administrativeArea}";
+        _address = "${place.administrativeArea}, ${place.country}";
       });
     }
   }
@@ -144,7 +146,7 @@ class _PrayersWidgetState extends State<PrayersWidget> {
 
   @override
   Widget build(BuildContext context) {
-    HijriCalendar.setLocal(S.of(context).DateLang);
+    HijriCalendar.setLocal(S.of(context).Language);
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(image: AssetImage("assets/images/background.png"),
@@ -162,12 +164,9 @@ class _PrayersWidgetState extends State<PrayersWidget> {
               Expanded(child: Text(HijriCalendar.now().toFormat("dd MMMM yyyy ${S.of(context).Hijri}"), style: Constants.headingTitle2,)),
               ElevatedButton(
                 onPressed: () {
-                  setState(() {
-                    print(context.read<MainCubit>().localLang);
-                    context.read<MainCubit>().changeLocalLang();
-                  });
-                },
-                child: Text(S.of(context).DateLang.toUpperCase()),
+                  context.read<MainCubit>().changeLocalLang();
+                  },
+                child: Text(S.of(context).Language == "en"? "AR" : "EN"), // if the app is in Arabic show EN button and vice versa
               ),
             ],
           ),
@@ -199,11 +198,11 @@ class _PrayersWidgetState extends State<PrayersWidget> {
             child: Column(
               children: [
                 Text(arPrayerName(_prayerTimes.nextPrayer().name == Prayer.none.name? Prayer.fajr.name : _prayerTimes.nextPrayer().name, context), style: Constants.headingCaption,),
-                Text(DateFormat.jm(S.of(context).DateLang).format(_prayerTimes.timeForPrayer(_prayerTimes.nextPrayer())?? _nextFajr), style: Constants.headingTitle1,),
+                Text(DateFormat.jm(S.of(context).Language).format(_prayerTimes.timeForPrayer(_prayerTimes.nextPrayer())?? _nextFajr), style: Constants.headingTitle1,),
                 Text("${S.of(context).TimeLeft} "
-                    "${_remainingTime.inHours > 0? "${_remainingTime.inHours} ${S.of(context).Hour}${_remainingTime.inHours > 1 && S.of(context).DateLang == "en"? 's':''} " : ""}"
-                    "${_remainingTime.inMinutes > 0? "${_remainingTime.inMinutes % 60} ${S.of(context).Minute}${_remainingTime.inMinutes > 1 && S.of(context).DateLang == "en"? 's':''} " : ""}"
-                    "${_remainingTime.inHours == 0? "${_remainingTime.inSeconds % 60} ${S.of(context).Second}${_remainingTime.inSeconds > 1 && S.of(context).DateLang == "en"? 's':''} " : ""}",
+                    "${_remainingTime.inHours > 0? "${_remainingTime.inHours} ${S.of(context).Hour}${_remainingTime.inHours > 1 && S.of(context).Language == "en"? 's':''} " : ""}"
+                    "${_remainingTime.inMinutes > 0? "${_remainingTime.inMinutes % 60} ${S.of(context).Minute}${_remainingTime.inMinutes > 1 && S.of(context).Language == "en"? 's':''} " : ""}"
+                    "${_remainingTime.inHours == 0? "${_remainingTime.inSeconds % 60} ${S.of(context).Second}${_remainingTime.inSeconds > 1 && S.of(context).Language == "en"? 's':''} " : ""}",
                   style: Constants.headingCaption,),
               ],
             ),
@@ -250,7 +249,7 @@ Widget prayerTimeCard(DateTime? prayerTime , String prayerName, IconData icon, c
       padding: const EdgeInsets.all(10),
       child: Icon(icon, color: Colors.white, size: 30.sp,),
     ),
-    Text(DateFormat.jm(S.of(context).DateLang).format(prayerTime!), style: Constants.headingSmall,)
+    Text(DateFormat.jm(S.of(context).Language).format(prayerTime!), style: Constants.headingSmall,)
   ],
 );
 

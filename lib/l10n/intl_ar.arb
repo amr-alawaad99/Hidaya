@@ -1,5 +1,5 @@
 {
-  "DateLang" : "ar",
+  "Language": "ar",
   "Hijri" : "هـ",
   "Fajr" : "الفجر",
   "Dhuhr" : "الظهر",
@@ -10,6 +10,7 @@
   "Hour" : "ساعة",
   "Minute" : "دقيقة",
   "Second" : "ثانية",
-  "PermissionDeniedMessage" : "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق"
+  "PermissionDeniedMessage" : "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق",
+  "PrayerNotification" : "الإشعارات"
 
 }

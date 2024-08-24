@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hadith_reminder/cache/cache_helper.dart';
 import 'package:hadith_reminder/cubit/main_state.dart';
 import 'package:hadith_reminder/model/hadith_model.dart';
 
@@ -17,10 +18,11 @@ class MainCubit extends Cubit<MainState> {
     return hadithMapModel;
   }
 
-  String localLang = "ar";
+  String localLang = CacheHelper().getDataString(key: "appLang")?? "ar"; // If it's the first time opening the app (nothing in cache memory), it will launch in Arabic
   void changeLocalLang(){
-    localLang == "ar"? localLang = "en" : localLang = "ar";
-    emit(MainInitState());
+    localLang = localLang == "ar"? "en" : "ar";
+    CacheHelper().saveData(key: "appLang", value: localLang);
+    emit(ChangeLanguageState());
   }
 
 

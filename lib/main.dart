@@ -5,25 +5,24 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hadith_reminder/constants/constants.dart';
 import 'package:hadith_reminder/cubit/main_cubit.dart';
+import 'package:hadith_reminder/cubit/main_state.dart';
 import 'package:hadith_reminder/generated/l10n.dart';
 import 'package:hadith_reminder/screens/home_screen.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
 import 'cache/cache_helper.dart';
+import 'constants/bloc_observer.dart';
 
-/// I Have not add Geo locator permissions to IOS
-///
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper().init();
-  // await initializeDateFormatting('ar', null);
-  runApp(
-    BlocProvider(
+  Bloc.observer = MyBlocObserver();
+
+  runApp(BlocProvider(
       create: (context) => MainCubit(),
       child: const MyApp(),
     ),
   );
+
 }
 
 class MyApp extends StatelessWidget {
@@ -32,14 +31,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    /// Sets a static color for the status bar
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Constants.primaryColor,
       statusBarIconBrightness: Brightness.light,
     ));
+    return BlocBuilder<MainCubit, MainState>(
+  builder: (context, state) {
+    /// ScreenUtilInit for responsive UI
     return ScreenUtilInit(
-      designSize: Size(MediaQuery.of(context).size.width,
-          MediaQuery.of(context).size.height),
+      designSize: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
       builder: (context, child) => MaterialApp(
+        /// Localization
         locale: Locale(context.read<MainCubit>().localLang),
         localizationsDelegates: const [
           S.delegate,
@@ -49,6 +52,7 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         debugShowCheckedModeBanner: false,
+        /// Theme
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
@@ -56,5 +60,7 @@ class MyApp extends StatelessWidget {
         home: const HomeScreen(),
       ),
     );
+  },
+);
   }
 }

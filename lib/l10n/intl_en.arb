@@ -1,5 +1,5 @@
 {
-  "DateLang" : "en",
+  "Language": "en",
   "Hijri" : "H",
   "Fajr" : "Fajr",
   "Dhuhr" : "Dhuhr",
@@ -10,7 +10,9 @@
   "Hour" : "Hour",
   "Minute" : "Minute",
   "Second" : "Second",
-  "PermissionDeniedMessage" : "Location permissions are denied, please allow location access from the app settings"
+  "PermissionDeniedMessage" : "Location permissions are denied, please allow location access from the app settings",
+  "PrayerNotification" : "Notification"
+
 
 
 }
