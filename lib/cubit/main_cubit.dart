@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hadith_reminder/cache/cache_helper.dart';
+import 'package:hadith_reminder/functions/local_notification_service.dart';
 import 'package:hadith_reminder/cubit/main_state.dart';
 import 'package:hadith_reminder/model/hadith_model.dart';
 
@@ -32,12 +33,16 @@ class MainCubit extends Cubit<MainState> {
     "maghrib": CacheHelper().getData(key: "maghrib")?? false,
     "isha": CacheHelper().getData(key: "isha")?? false,
   };
-
   void toggleSwitch({required String prayerName, required bool isOn}) {
     prayerNotifications[prayerName] = isOn;
     CacheHelper().saveData(key: prayerName, value: isOn);
     emit(ToggleSwitchState());
   }
 
+  Future<bool?> requestNotificationPermission () async {
+    bool? areEnabled = await LocalNotificationService.requestNotificationPermission;
+    emit(RequestNotificationPermissionState());
+    return areEnabled;
+  }
 
 }

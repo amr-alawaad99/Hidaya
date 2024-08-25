@@ -160,11 +160,21 @@ class S {
     );
   }
 
-  /// `Location permissions are denied, please allow location access from the app settings`
+  /// `Location permissions are denied, please allow location access from the app settings.`
   String get PermissionDeniedMessage {
     return Intl.message(
-      'Location permissions are denied, please allow location access from the app settings',
+      'Location permissions are denied, please allow location access from the app settings.',
       name: 'PermissionDeniedMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location services are disabled.`
+  String get LocationDisabled {
+    return Intl.message(
+      'Location services are disabled.',
+      name: 'LocationDisabled',
       desc: '',
       args: [],
     );
@@ -175,6 +185,16 @@ class S {
     return Intl.message(
       'Notifications',
       name: 'PrayerNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications permission is denied, please allow Notifications from the app settings.`
+  String get NotificationsDisabled {
+    return Intl.message(
+      'Notifications permission is denied, please allow Notifications from the app settings.',
+      name: 'NotificationsDisabled',
       desc: '',
       args: [],
     );

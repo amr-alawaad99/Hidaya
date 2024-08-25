@@ -28,6 +28,16 @@ class _HomeScreenState extends State<HomeScreen> {
   late  PrayerTimes _prayerTimes = PrayerTimes.today(_myCoordinates, _params);
   late DateTime _targetTime;
   final DateTime nextDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1);
+  DateTime? nextDayPrayerTime(String prayer){
+    switch(prayer){
+      case "fajr": return PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).fajr;
+      case "dhuhr": return PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).dhuhr;
+      case "asr": return PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).asr;
+      case "maghrib": return PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).maghrib;
+      case "isha": return PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).isha;
+      default: return null;
+    }
+  }
   late final DateTime _nextFajr = PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).fajr;
 
   @override
@@ -89,7 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!serviceEnabled) {
       // Location services are not enabled, handle appropriately
       setState(() {
-        _address = 'Location services are disabled.';
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).LocationDisabled)));
+
       });
       return;
     }
@@ -149,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               PrayersTimeWidget(prayerTimes: _prayerTimes, remainingTime: _remainingTime, nextFajr: _nextFajr, address: _address, getCurrentLocation: _getCurrentLocation,),
-              PrayersNotificationWidget(prayerTime: _prayerTimes)
+              PrayersNotificationWidget(prayerTime: _prayerTimes, dateTime: nextDayPrayerTime,)
             ],
           ),
         ),

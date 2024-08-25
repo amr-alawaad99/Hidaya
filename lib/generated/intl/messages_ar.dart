@@ -29,10 +29,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "Hour": MessageLookupByLibrary.simpleMessage("ساعة"),
         "Isha": MessageLookupByLibrary.simpleMessage("العشاء"),
         "Language": MessageLookupByLibrary.simpleMessage("ar"),
+        "LocationDisabled":
+            MessageLookupByLibrary.simpleMessage("خدمات الموقع غير مفعلة."),
         "Maghrib": MessageLookupByLibrary.simpleMessage("المغرب"),
         "Minute": MessageLookupByLibrary.simpleMessage("دقيقة"),
+        "NotificationsDisabled": MessageLookupByLibrary.simpleMessage(
+            "تم منع الإشعارات, براجاء منح إذن الإشعارات من إعدادات التطبيق."),
         "PermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-            "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق"),
+            "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق."),
         "PrayerNotification": MessageLookupByLibrary.simpleMessage("الإشعارات"),
         "Second": MessageLookupByLibrary.simpleMessage("ثانية"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("متبقي")

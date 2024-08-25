@@ -29,10 +29,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "Hour": MessageLookupByLibrary.simpleMessage("Hour"),
         "Isha": MessageLookupByLibrary.simpleMessage("Isha"),
         "Language": MessageLookupByLibrary.simpleMessage("en"),
+        "LocationDisabled": MessageLookupByLibrary.simpleMessage(
+            "Location services are disabled."),
         "Maghrib": MessageLookupByLibrary.simpleMessage("Maghrib"),
         "Minute": MessageLookupByLibrary.simpleMessage("Minute"),
+        "NotificationsDisabled": MessageLookupByLibrary.simpleMessage(
+            "Notifications permission is denied, please allow Notifications from the app settings."),
         "PermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-            "Location permissions are denied, please allow location access from the app settings"),
+            "Location permissions are denied, please allow location access from the app settings."),
         "PrayerNotification":
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "Second": MessageLookupByLibrary.simpleMessage("Second"),

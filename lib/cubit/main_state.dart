@@ -6,3 +6,5 @@ final class ChangeLanguageState extends MainState{}
 
 final class ToggleSwitchState extends MainState{}
 
+final class RequestNotificationPermissionState extends MainState{}
+

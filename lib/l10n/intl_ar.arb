@@ -10,7 +10,9 @@
   "Hour" : "ساعة",
   "Minute" : "دقيقة",
   "Second" : "ثانية",
-  "PermissionDeniedMessage" : "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق",
-  "PrayerNotification" : "الإشعارات"
+  "PermissionDeniedMessage" : "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق.",
+  "LocationDisabled" : "خدمات الموقع غير مفعلة.",
+  "PrayerNotification" : "الإشعارات",
+  "NotificationsDisabled" : "تم منع الإشعارات, براجاء منح إذن الإشعارات من إعدادات التطبيق."
 
 }

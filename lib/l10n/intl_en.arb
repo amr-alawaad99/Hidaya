@@ -10,8 +10,10 @@
   "Hour" : "Hour",
   "Minute" : "Minute",
   "Second" : "Second",
-  "PermissionDeniedMessage" : "Location permissions are denied, please allow location access from the app settings",
-  "PrayerNotification" : "Notifications"
+  "PermissionDeniedMessage" : "Location permissions are denied, please allow location access from the app settings.",
+  "LocationDisabled" : "Location services are disabled.",
+  "PrayerNotification" : "Notifications",
+  "NotificationsDisabled" : "Notifications permission is denied, please allow Notifications from the app settings."
 
 
 

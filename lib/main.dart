@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:hadith_reminder/constants/constants.dart';
+import 'package:hadith_reminder/functions/local_notification_service.dart';
 import 'package:hadith_reminder/cubit/main_cubit.dart';
 import 'package:hadith_reminder/cubit/main_state.dart';
 import 'package:hadith_reminder/generated/l10n.dart';
 import 'package:hadith_reminder/screens/home_screen.dart';
 import 'cache/cache_helper.dart';
 import 'constants/bloc_observer.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+
+
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await CacheHelper().init();
   Bloc.observer = MyBlocObserver();
+  // this method allow all Future methods to run simultaneously
+  await Future.wait([
+    CacheHelper().init(),
+    LocalNotificationService.init(),
+  ]);
+  tz.initializeTimeZones();
+  // Get the local timezone identifier (e.g., 'Africa/Cairo')
+  final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+  // Set the timezone location in the timezone package
+  tz.setLocalLocation(tz.getLocation(currentTimeZone));
 
 
 
@@ -57,7 +72,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         /// Theme
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorSchemeSeed: Constants.primaryColor,
           useMaterial3: true,
         ),
         home: const HomeScreen(),
