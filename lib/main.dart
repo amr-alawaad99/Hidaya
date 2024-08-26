@@ -25,7 +25,10 @@ Future<void> main() async {
     WorkManagerService().init(),
   ]);
 
-
+  bool isPeriodicNotificationOn = CacheHelper().getData(key: "periodicNotification");
+  if(isPeriodicNotificationOn){
+    LocalNotificationService.showPeriodicNotification();
+  }
 
   runApp(
     BlocProvider(

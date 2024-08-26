@@ -27,6 +27,7 @@ class Constants {
   );
 }
 
+///
 class FittedText extends StatelessWidget {
   final String text;
   final TextStyle textStyle;

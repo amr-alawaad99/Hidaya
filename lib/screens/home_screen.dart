@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +21,14 @@ class HomeScreenState extends State<HomeScreen> {
 
 
   late Timer _timer;
+  late DateTime _targetTime;
   Duration _remainingTime = Duration.zero;
   double? lat = CacheHelper().getData(key: "lat");
   double? long = CacheHelper().getData(key: "long");
   late Coordinates _myCoordinates = Coordinates(lat?? 30.033333,long?? 31.233334); // Replace with your own location lat, lng.
   final _params = CalculationMethod.egyptian.getParameters();
   late  PrayerTimes _prayerTimes = PrayerTimes.today(_myCoordinates, _params);
-  late DateTime _targetTime;
+  // getting next day date/time (midnight time 00:00) to use it for getting next day prayers time
   final DateTime nextDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1);
   DateTime? nextDayPrayerTime(String prayer){
     switch(prayer){
@@ -48,11 +50,11 @@ class HomeScreenState extends State<HomeScreen> {
       default: return null;
     }
   }
-  late final DateTime _nextFajr = PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).fajr;
 
   @override
   void initState() {
     super.initState();
+    // The madhab used to calculate Asr time
     _params.madhab = Madhab.shafi;
     _checkCurrentLocation();
     _updateRemainingTime();
@@ -64,8 +66,10 @@ class HomeScreenState extends State<HomeScreen> {
   void _updateRemainingTime() {
     setState(() {
       DateTime currentTime = DateTime.now();
+      // if isha was the last prayer, next prayer will be Prayer.non until next day starts (midnight).
+      // here we handle that
       if(_prayerTimes.nextPrayer() == Prayer.none){
-        _targetTime =  _nextFajr;
+        _targetTime =  nextDayPrayerTime("fajr")!;
       } else {
         _targetTime =  _prayerTimes.timeForPrayer(_prayerTimes.nextPrayer())!;
       }
@@ -80,11 +84,12 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
 
+  // local attribute returns your device language
   final String locale = PlatformDispatcher.instance.locales.first.languageCode;
   late String _address = locale == "ar"? "القاهرة, مصر" : "Cairo, Egypt";
   List<Placemark>? placeMarks = [];
-
   Placemark? place;
+
   Future<void> _checkCurrentLocation() async {
     if(lat == null){
       _getCurrentLocation();
@@ -110,7 +115,6 @@ class HomeScreenState extends State<HomeScreen> {
       // Location services are not enabled, handle appropriately
       setState(() {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).LocationDisabled)));
-
       });
       return;
     }
@@ -121,7 +125,7 @@ class HomeScreenState extends State<HomeScreen> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         // Permissions are denied, handle appropriately
-        print('Location permissions are denied');
+        log('Location permissions are denied');
         return;
       }
     }
@@ -129,7 +133,7 @@ class HomeScreenState extends State<HomeScreen> {
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).PermissionDeniedMessage)));
-      print('Location permissions are permanently denied');
+      log('Location permissions are permanently denied');
       return;
     }
 
@@ -169,7 +173,7 @@ class HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              PrayersTimeWidget(prayerTimes: _prayerTimes, remainingTime: _remainingTime, nextFajr: _nextFajr, address: _address, getCurrentLocation: _getCurrentLocation,),
+              PrayersTimeWidget(prayerTimes: _prayerTimes, remainingTime: _remainingTime, nextFajr: nextDayPrayerTime("fajr")!, address: _address, getCurrentLocation: _getCurrentLocation,),
               PrayersNotificationWidget(prayerTime: _prayerTimes, dateTime: nextDayPrayerTime,)
             ],
           ),

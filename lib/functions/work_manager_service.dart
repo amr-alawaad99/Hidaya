@@ -11,7 +11,7 @@ class WorkManagerService{
   Future<void> init() async {
     await Workmanager().initialize(
         callbackDispatcher, // The top level function, aka callbackDispatcher
-        isInDebugMode: true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+        isInDebugMode: false // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
     );
   }
 
@@ -28,15 +28,19 @@ class WorkManagerService{
         "title" : title,
         "prayerName" : prayerName,
       },
-      frequency: Duration(hours: 5),
-      initialDelay: Duration(seconds: 1),
+      frequency: Duration(hours: 8),
+      constraints: Constraints(
+        networkType: NetworkType.not_required,
+        requiresBatteryNotLow: false, // Allows task to run even if the battery is low
+        requiresCharging: false, // Allows task to run even if not charging
+        requiresDeviceIdle: false, // Allows task to run even if the device is not idle
+      ),
     );
   }
 
   void cancelTask(int id){
     Workmanager().cancelByUniqueName(id.toString());
   }
-
 
 
 }

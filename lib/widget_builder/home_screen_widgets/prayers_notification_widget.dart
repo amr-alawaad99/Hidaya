@@ -14,8 +14,8 @@ class PrayersNotificationWidget extends StatelessWidget {
   final PrayerTimes prayerTime;
   final DateTime? Function(String) dateTime;
 
-  const PrayersNotificationWidget({super.key, required this.prayerTime, required this.dateTime});
-
+  const PrayersNotificationWidget(
+      {super.key, required this.prayerTime, required this.dateTime});
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +34,11 @@ class PrayersNotificationWidget extends StatelessWidget {
           height: 0.5,
           color: Colors.black,
         ),
-        notificationCard(Prayer.fajr.name, prayerTime.fajr, dateTime(Prayer.fajr.name)!, context),
-        notificationCard(Prayer.dhuhr.name, prayerTime.dhuhr, dateTime(Prayer.dhuhr.name)!,context),
-        notificationCard(Prayer.asr.name, prayerTime.asr, dateTime(Prayer.asr.name)!,context),
-        notificationCard(Prayer.maghrib.name, prayerTime.maghrib, dateTime(Prayer.maghrib.name)!,context),
-        notificationCard(Prayer.isha.name, prayerTime.isha, dateTime(Prayer.isha.name)!,context),
+        notificationCard(Prayer.fajr.name, context),
+        notificationCard(Prayer.dhuhr.name, context),
+        notificationCard(Prayer.asr.name, context),
+        notificationCard(Prayer.maghrib.name, context),
+        notificationCard(Prayer.isha.name, context),
       ],
     );
   }
@@ -52,40 +52,42 @@ Map<String, int> prayerId = {
   "isha": 4,
 };
 
-Widget notificationCard(String prayerName, DateTime prayerTime, DateTime prayerNextDayTime, BuildContext context) => Container(
-    padding: EdgeInsets.all(15.sp),
-    decoration: BoxDecoration(
+Widget notificationCard(String prayerName, BuildContext context) => Container(
+      padding: EdgeInsets.all(15.sp),
+      decoration: BoxDecoration(
         border: BorderDirectional(
-            bottom: BorderSide(color: Colors.black, width: 0.5.w))),
-    child: Row(
-      children: [
-        Expanded(
-            child: Text(
-          ar_enPrayerName(prayerName, context),
-          style: Constants.headingCaption.copyWith(color: Colors.black),
-        )),
-        Switch(
-          value: context.read<MainCubit>().prayerNotifications[prayerName]!,
-          onChanged: (value) async {
-            bool? areNotificationsEnabled = await context.read<MainCubit>().requestNotificationPermission();
-            if(areNotificationsEnabled!){
-              context.read<MainCubit>().toggleSwitch(isOn: value, prayerName: prayerName);
-              switch(value){
-                case true:
-                  LocalNotificationService.showBasicNotification();
-                  // WorkManagerService().registerMyTask(id: prayerId[prayerName]!, title: "صلاة ${ar_enPrayerName(prayerName, context)} - $prayerName prayer", prayerName: prayerName); // title example "صلاة الفحر - fajr prayer"
-                  return null;
-                case false:
-                  LocalNotificationService.cancelNotification(prayerId[prayerName]!);
-                  WorkManagerService().cancelTask(prayerId[prayerName]!);
-                  return null;
-              }
-            } else if (!areNotificationsEnabled){
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).NotificationsDisabled)));
-            }
-
-          },
+          bottom: BorderSide(color: Colors.black, width: 0.5.w),
         ),
-      ],
-    ),
-  );
+      ),
+      child: Row(
+        children: [
+          /// prayer Name
+          Expanded(
+              child: Text(
+            ar_enPrayerName(prayerName, context),
+            style: Constants.headingCaption.copyWith(color: Colors.black),
+          )),
+          /// Turn notification on/off switch
+          Switch(
+            value: context.read<MainCubit>().prayerNotifications[prayerName]!,
+            onChanged: (value) async {
+              bool? areNotificationsEnabled = await context.read<MainCubit>().requestNotificationPermission();
+              if (areNotificationsEnabled!) {
+                context.read<MainCubit>().toggleSwitch(isOn: value, prayerName: prayerName);
+                switch (value) {
+                  case true:
+                    WorkManagerService().registerMyTask(id: prayerId[prayerName]!, title: "صلاة ${ar_enPrayerName(prayerName, context)} - $prayerName prayer", prayerName: prayerName); // title example "صلاة الفحر - fajr prayer"
+                    return null;
+                  case false:
+                    LocalNotificationService.cancelNotification(prayerId[prayerName]!);
+                    WorkManagerService().cancelTask(prayerId[prayerName]!);
+                    return null;
+                }
+              } else if (!areNotificationsEnabled) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).NotificationsDisabled)));
+              }
+            },
+          ),
+        ],
+      ),
+    );

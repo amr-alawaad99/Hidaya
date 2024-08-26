@@ -16,6 +16,7 @@ class PrayersTimeWidget extends StatelessWidget {
   final String address;
   final DateTime nextFajr;
   final Future<void> Function() getCurrentLocation;
+
   const PrayersTimeWidget(
       {super.key,
       required this.prayerTimes,
@@ -46,7 +47,8 @@ class PrayersTimeWidget extends StatelessWidget {
                 text: HijriCalendar.now()
                     .toFormat("dd MMMM yyyy ${S.of(context).Hijri}"),
                 textStyle: Constants.headingTitle2,
-                boxConstraints: BoxConstraints(maxWidth: 0.6.sw, maxHeight: 0.1.sh),
+                boxConstraints:
+                    BoxConstraints(maxWidth: 0.6.sw, maxHeight: 0.05.sh),
               ),
               const Spacer(),
               ElevatedButton(
@@ -62,13 +64,14 @@ class PrayersTimeWidget extends StatelessWidget {
           SizedBox(
             height: 0.h,
           ),
+
           /// Address
           Row(
             children: [
               /// Address
               FittedText(
                 boxConstraints:
-                    BoxConstraints(maxWidth: 0.5.sw, maxHeight: 0.05.sh),
+                    BoxConstraints(maxWidth: 0.5.sw, maxHeight: 0.03.sh),
                 text: address,
                 textStyle: Constants.headingCaption,
               ),
@@ -92,6 +95,7 @@ class PrayersTimeWidget extends StatelessWidget {
           SizedBox(
             height: 30.h,
           ),
+
           /// Next prayer, it's time, and how much time left
           Center(
             child: Column(
@@ -123,6 +127,7 @@ class PrayersTimeWidget extends StatelessWidget {
           SizedBox(
             height: 30.h,
           ),
+
           /// Each prayer name, icon, and time
           Row(
             children: [
@@ -170,7 +175,8 @@ String ar_enPrayerName(String enPrayerName, context) {
   }
 }
 
-Widget prayerTimeCard(DateTime? prayerTime, String prayerName, IconData icon, context) =>
+Widget prayerTimeCard(
+        DateTime? prayerTime, String prayerName, IconData icon, context) =>
     Column(
       children: [
         Text(

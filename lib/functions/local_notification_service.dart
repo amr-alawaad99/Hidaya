@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+import 'package:hadith_reminder/cache/cache_helper.dart';
 import 'package:hadith_reminder/constants/constants.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -12,11 +12,10 @@ class LocalNotificationService{
   /// initialization
   static Future init() async{
     InitializationSettings settings = InitializationSettings(
-      android: AndroidInitializationSettings("@drawable/ic_launcher_foreground"),
+      android: AndroidInitializationSettings("@drawable/splash"),
       iOS: DarwinInitializationSettings(),
     );
     await flutterLocalNotificationsPlugin.initialize(settings);
-    showRepeatedNotification();
   }
 
   static final Future<bool?>? areNotificationsEnabled =
@@ -32,7 +31,7 @@ class LocalNotificationService{
     print("basic Notification");
     NotificationDetails details = NotificationDetails(
       android: AndroidNotificationDetails(
-        "id 2",
+        "id 1",
         "basic",
         importance: Importance.max,
         priority: Priority.high,
@@ -48,14 +47,15 @@ class LocalNotificationService{
     );
   }
 
-  /// Send repeated notification every X period of time
-  static Future<void> showRepeatedNotification() async {
+  /// Send periodic notification every X period of time
+  static Future<void> showPeriodicNotification() async {
     NotificationDetails details = NotificationDetails(
       android: AndroidNotificationDetails(
         "id 2",
-        "repeated",
+        "periodic",
         importance: Importance.max,
         priority: Priority.high,
+        color: Constants.primaryColor,
       ),
       iOS: DarwinNotificationDetails(),
     );
@@ -65,7 +65,10 @@ class LocalNotificationService{
       null,
       RepeatInterval.hourly,
       details,
+      androidScheduleMode:AndroidScheduleMode.exactAllowWhileIdle,
     );
+    // save that u called the periodic notification method before
+    CacheHelper().saveData(key: "periodicNotification", value: true);
   }
 
   /// Send scheduled notification at date/time X
@@ -135,7 +138,6 @@ class LocalNotificationService{
 
   static Future<void> cancelNotification(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
-    print("$id cancelled");
   }
 
 
