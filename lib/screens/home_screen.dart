@@ -13,10 +13,10 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
 
 
   late Timer _timer;
@@ -35,6 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
       case "asr": return PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).asr;
       case "maghrib": return PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).maghrib;
       case "isha": return PrayerTimes(_myCoordinates, DateComponents(nextDay.year, nextDay.month, nextDay.day), _params).isha;
+      default: return null;
+    }
+  }
+  DateTime? prayerTime(String prayer){
+    switch(prayer){
+      case "fajr": return _prayerTimes.fajr;
+      case "dhuhr": return _prayerTimes.dhuhr;
+      case "asr": return _prayerTimes.asr;
+      case "maghrib": return _prayerTimes.maghrib;
+      case "isha": return _prayerTimes.isha;
       default: return null;
     }
   }

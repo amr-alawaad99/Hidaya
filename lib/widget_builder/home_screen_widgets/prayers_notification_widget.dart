@@ -2,9 +2,11 @@ import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hadith_reminder/cache/cache_helper.dart';
 import 'package:hadith_reminder/constants/constants.dart';
 import 'package:hadith_reminder/functions/local_notification_service.dart';
 import 'package:hadith_reminder/cubit/main_cubit.dart';
+import 'package:hadith_reminder/functions/work_manager_service.dart';
 import 'package:hadith_reminder/widget_builder/home_screen_widgets/prayers_time_widget.dart';
 import '../../generated/l10n.dart';
 
@@ -14,8 +16,10 @@ class PrayersNotificationWidget extends StatelessWidget {
 
   const PrayersNotificationWidget({super.key, required this.prayerTime, required this.dateTime});
 
+
   @override
   Widget build(BuildContext context) {
+    CacheHelper().saveData(key: "a", value: prayerTime.fajr.toString());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,6 +44,14 @@ class PrayersNotificationWidget extends StatelessWidget {
   }
 }
 
+Map<String, int> prayerId = {
+  "fajr": 0,
+  "dhuhr": 1,
+  "asr": 2,
+  "maghrib": 3,
+  "isha": 4,
+};
+
 Widget notificationCard(String prayerName, DateTime prayerTime, DateTime prayerNextDayTime, BuildContext context) => Container(
     padding: EdgeInsets.all(15.sp),
     decoration: BoxDecoration(
@@ -58,22 +70,16 @@ Widget notificationCard(String prayerName, DateTime prayerTime, DateTime prayerN
             bool? areNotificationsEnabled = await context.read<MainCubit>().requestNotificationPermission();
             if(areNotificationsEnabled!){
               context.read<MainCubit>().toggleSwitch(isOn: value, prayerName: prayerName);
-              if (prayerName == "fajr") {
-                LocalNotificationService.showBasicNotification();
+              switch(value){
+                case true:
+                  LocalNotificationService.showBasicNotification();
+                  // WorkManagerService().registerMyTask(id: prayerId[prayerName]!, title: "صلاة ${ar_enPrayerName(prayerName, context)} - $prayerName prayer", prayerName: prayerName); // title example "صلاة الفحر - fajr prayer"
+                  return null;
+                case false:
+                  LocalNotificationService.cancelNotification(prayerId[prayerName]!);
+                  WorkManagerService().cancelTask(prayerId[prayerName]!);
+                  return null;
               }
-              if (prayerName == "dhuhr") {
-                LocalNotificationService.showRepeatedNotification();
-              }
-              if (prayerName == "asr") {
-                LocalNotificationService.showScheduledNotification(
-                  id: 3,
-                  title: prayerName,
-                  body: prayerTime.toString(),
-                  dateTime: prayerTime,
-                  nextDateTime: prayerNextDayTime,
-                );
-                // WorkManagerService().init();
-            }
             } else if (!areNotificationsEnabled){
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).NotificationsDisabled)));
             }
