@@ -5,7 +5,7 @@ import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:hadith_reminder/widget_builder/home_screen_widgets/prayers_notification_widget.dart';
+import 'package:Hidaya/widget_builder/home_screen_widgets/prayers_notification_widget.dart';
 import '../cache/cache_helper.dart';
 import '../generated/l10n.dart';
 import '../widget_builder/home_screen_widgets/prayers_time_widget.dart';

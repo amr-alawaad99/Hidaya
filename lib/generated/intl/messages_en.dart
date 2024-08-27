@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "PrayerNotification":
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "Second": MessageLookupByLibrary.simpleMessage("Second"),
+        "Sunrise": MessageLookupByLibrary.simpleMessage("Sunrise"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("Time left")
       };
 }

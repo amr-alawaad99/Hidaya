@@ -1,7 +1,7 @@
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:hadith_reminder/cache/cache_helper.dart';
-import 'package:hadith_reminder/functions/local_notification_service.dart';
-import 'package:hadith_reminder/screens/home_screen.dart';
+import 'package:Hidaya/cache/cache_helper.dart';
+import 'package:Hidaya/functions/local_notification_service.dart';
+import 'package:Hidaya/screens/home_screen.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;

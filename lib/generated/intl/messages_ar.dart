@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق."),
         "PrayerNotification": MessageLookupByLibrary.simpleMessage("الإشعارات"),
         "Second": MessageLookupByLibrary.simpleMessage("ثانية"),
+        "Sunrise": MessageLookupByLibrary.simpleMessage("الشروق"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("متبقي")
       };
 }

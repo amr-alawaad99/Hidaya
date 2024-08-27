@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hadith_reminder/cache/cache_helper.dart';
-import 'package:hadith_reminder/functions/local_notification_service.dart';
-import 'package:hadith_reminder/cubit/main_state.dart';
+import 'package:Hidaya/cache/cache_helper.dart';
+import 'package:Hidaya/functions/local_notification_service.dart';
+import 'package:Hidaya/cubit/main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
 

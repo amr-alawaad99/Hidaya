@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:hadith_reminder/cubit/main_cubit.dart';
+import 'package:Hidaya/cubit/main_cubit.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 
@@ -162,6 +162,8 @@ String ar_enPrayerName(String enPrayerName, context) {
   switch (enPrayerName) {
     case "fajr":
       return S.of(context).Fajr;
+    case "sunrise":
+      return S.of(context).Sunrise;
     case "dhuhr":
       return S.of(context).Dhuhr;
     case "asr":

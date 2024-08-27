@@ -1,4 +1,4 @@
-# hadith_reminder
+# hidaya
 
 A new Flutter project.
 

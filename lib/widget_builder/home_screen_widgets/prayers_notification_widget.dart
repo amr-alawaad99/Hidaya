@@ -2,12 +2,12 @@ import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hadith_reminder/cache/cache_helper.dart';
-import 'package:hadith_reminder/constants/constants.dart';
-import 'package:hadith_reminder/functions/local_notification_service.dart';
-import 'package:hadith_reminder/cubit/main_cubit.dart';
-import 'package:hadith_reminder/functions/work_manager_service.dart';
-import 'package:hadith_reminder/widget_builder/home_screen_widgets/prayers_time_widget.dart';
+import 'package:Hidaya/cache/cache_helper.dart';
+import 'package:Hidaya/constants/constants.dart';
+import 'package:Hidaya/functions/local_notification_service.dart';
+import 'package:Hidaya/cubit/main_cubit.dart';
+import 'package:Hidaya/functions/work_manager_service.dart';
+import 'package:Hidaya/widget_builder/home_screen_widgets/prayers_time_widget.dart';
 import '../../generated/l10n.dart';
 
 class PrayersNotificationWidget extends StatelessWidget {

@@ -2,6 +2,7 @@
   "Language": "en",
   "Hijri" : "H",
   "Fajr" : "Fajr",
+  "Sunrise" : "Sunrise",
   "Dhuhr" : "Dhuhr",
   "Asr" : "Asr",
   "Maghrib" : "Maghrib",

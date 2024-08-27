@@ -1,0 +1,2 @@
+-keep class **.R$raw { *; }
+-keeppackagenames com.kyoutech.Hidaya

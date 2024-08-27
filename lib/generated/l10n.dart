@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `Sunrise`
+  String get Sunrise {
+    return Intl.message(
+      'Sunrise',
+      name: 'Sunrise',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Dhuhr`
   String get Dhuhr {
     return Intl.message(

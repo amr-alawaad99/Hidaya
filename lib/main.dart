@@ -3,21 +3,24 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hadith_reminder/constants/constants.dart';
-import 'package:hadith_reminder/functions/local_notification_service.dart';
-import 'package:hadith_reminder/cubit/main_cubit.dart';
-import 'package:hadith_reminder/cubit/main_state.dart';
-import 'package:hadith_reminder/functions/work_manager_service.dart';
-import 'package:hadith_reminder/generated/l10n.dart';
-import 'package:hadith_reminder/screens/home_screen.dart';
+import 'package:Hidaya/constants/constants.dart';
+import 'package:Hidaya/functions/local_notification_service.dart';
+import 'package:Hidaya/cubit/main_cubit.dart';
+import 'package:Hidaya/cubit/main_state.dart';
+import 'package:Hidaya/functions/work_manager_service.dart';
+import 'package:Hidaya/generated/l10n.dart';
+import 'package:Hidaya/screens/home_screen.dart';
 import 'cache/cache_helper.dart';
 import 'constants/bloc_observer.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = MyBlocObserver();
 
+  /// Sets a static color for the status bar
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Constants.primaryColor,
+    statusBarIconBrightness: Brightness.light,
+  ));
   // this method allow all Future methods to run simultaneously
   await Future.wait([
     CacheHelper().init(),
@@ -25,56 +28,55 @@ Future<void> main() async {
     WorkManagerService().init(),
   ]);
 
-  bool isPeriodicNotificationOn = CacheHelper().getData(key: "periodicNotification");
-  if(isPeriodicNotificationOn){
+  Bloc.observer = MyBlocObserver();
+
+  bool isPeriodicNotificationOn =
+      CacheHelper().getData(key: "periodicNotification") ?? false;
+  if (!isPeriodicNotificationOn) {
     LocalNotificationService.showPeriodicNotification();
   }
 
   runApp(
-    BlocProvider(
-      create: (context) => MainCubit(),
-      child: const MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    /// Sets a static color for the status bar
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Constants.primaryColor,
-      statusBarIconBrightness: Brightness.light,
-    ));
-    return BlocBuilder<MainCubit, MainState>(
-      builder: (context, state) {
-        /// ScreenUtilInit for responsive UI
-        return ScreenUtilInit(
-          designSize: Size(411, 890),
-          builder: (context, child) => MaterialApp(
-            /// Localization
-            locale: Locale(context.read<MainCubit>().localLang),
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            debugShowCheckedModeBanner: false,
+    /// ScreenUtilInit for responsive UI
+    return ScreenUtilInit(
+      designSize: Size(411, 890),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: BlocProvider(
+        create: (context) => MainCubit(),
+        child: BlocBuilder<MainCubit, MainState>(
+          builder: (context, state) {
+            return MaterialApp(
+              /// Localization
+              locale: Locale(context.read<MainCubit>().localLang),
+              localizationsDelegates: const [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: S.delegate.supportedLocales,
+              debugShowCheckedModeBanner: false,
 
-            /// Theme
-            theme: ThemeData(
-              colorSchemeSeed: Constants.primaryColor,
-              useMaterial3: true,
-            ),
-            home: const HomeScreen(),
-          ),
-        );
-      },
+              /// Theme
+              theme: ThemeData(
+                colorSchemeSeed: Constants.primaryColor,
+                useMaterial3: true,
+              ),
+              home: const HomeScreen(),
+            );
+          },
+        ),
+      ),
     );
   }
 }

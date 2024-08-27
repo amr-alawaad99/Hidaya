@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.hadith_reminder" "\0"
-            VALUE "FileDescription", "hadith_reminder" "\0"
+            VALUE "CompanyName", "com.kyoutech" "\0"
+            VALUE "FileDescription", "hidaya" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "hadith_reminder" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.hadith_reminder. All rights reserved." "\0"
-            VALUE "OriginalFilename", "hadith_reminder.exe" "\0"
-            VALUE "ProductName", "hadith_reminder" "\0"
+            VALUE "InternalName", "hidaya" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 com.kyoutech. All rights reserved." "\0"
+            VALUE "OriginalFilename", "hidaya.exe" "\0"
+            VALUE "ProductName", "hidaya" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
