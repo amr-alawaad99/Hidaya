@@ -106,7 +106,7 @@ class LocalNotificationService{
         playSound: true,
         importance: Importance.max,
         priority: Priority.high,
-        styleInformation: BigTextStyleInformation(bodyText),
+        styleInformation: BigTextStyleInformation(bodyText), // for text expanding if the notification's body text is more that one line
       ),
       iOS: DarwinNotificationDetails(),
     );
@@ -135,7 +135,6 @@ class LocalNotificationService{
       bodyText,
       scheduledTime,
       details,
-      matchDateTimeComponents: DateTimeComponents.time, // Required for periodic scheduling
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,// Ensures notifications are shown when the device is idle
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
     );
