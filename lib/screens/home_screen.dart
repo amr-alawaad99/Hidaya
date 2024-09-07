@@ -26,7 +26,7 @@ class HomeScreenState extends State<HomeScreen> {
   double? lat = CacheHelper().getData(key: "lat");
   double? long = CacheHelper().getData(key: "long");
   late Coordinates _myCoordinates = Coordinates(lat?? 30.033333,long?? 31.233334); // Replace with your own location lat, lng.
-  final _params = CalculationMethod.egyptian.getParameters();
+  final _params = CalculationMethod.north_america.getParameters();
   late  PrayerTimes _prayerTimes = PrayerTimes.today(_myCoordinates, _params);
   // getting next day date/time (midnight time 00:00) to use it for getting next day prayers time
   final DateTime nextDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1);
@@ -159,7 +159,7 @@ class HomeScreenState extends State<HomeScreen> {
     Placemark place = placeMarks[0];
 
     setState(() {
-      _address = "${place.administrativeArea}, ${place.country}";
+      _address = "${place.locality}, ${place.administrativeArea}, ${place.isoCountryCode}";
     });
   }
 

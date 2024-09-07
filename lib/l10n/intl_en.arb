@@ -14,7 +14,12 @@
   "PermissionDeniedMessage" : "Location permissions are denied, please allow location access from the app settings.",
   "LocationDisabled" : "Location services are disabled.",
   "PrayerNotification" : "Notifications",
-  "NotificationsDisabled" : "Notifications permission is denied, please allow Notifications from the app settings."
+  "NotificationsDisabled" : "Notifications permission is denied, please allow Notifications from the app settings.",
+  "Home" : "Home",
+  "Qibla" : "Qibla",
+  "Settings" : "Settings",
+  "DarkMode" : "DarkMode"
+
 
 
 

@@ -209,6 +209,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Home`
+  String get Home {
+    return Intl.message(
+      'Home',
+      name: 'Home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Qibla`
+  String get Qibla {
+    return Intl.message(
+      'Qibla',
+      name: 'Qibla',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get Settings {
+    return Intl.message(
+      'Settings',
+      name: 'Settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DarkMode`
+  String get DarkMode {
+    return Intl.message(
+      'DarkMode',
+      name: 'DarkMode',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

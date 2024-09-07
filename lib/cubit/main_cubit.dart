@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:Hidaya/screens/home_screen.dart';
+import 'package:Hidaya/screens/qibla_screen.dart';
+import 'package:Hidaya/screens/settings_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Hidaya/cache/cache_helper.dart';
@@ -35,6 +39,24 @@ class MainCubit extends Cubit<MainState> {
     bool? areEnabled = await LocalNotificationService.requestNotificationPermission;
     emit(RequestNotificationPermissionState());
     return areEnabled;
+  }
+
+  List<Widget> pages = [
+    HomeScreen(),
+    QiblaScreen(),
+    SettingsScreen(),
+  ];
+  int currentPage = 0;
+  void changeCurrentPage(int currentPage){
+    this.currentPage = currentPage;
+    emit(CurrentPageChangedState());
+  }
+
+
+  bool isDarkMode = false;
+  void switchThemeMode(){
+    isDarkMode = !isDarkMode;
+    emit(SwitchThemeModeState());
   }
 
 }

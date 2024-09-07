@@ -46,7 +46,7 @@ class PrayersTimeWidget extends StatelessWidget {
               FittedText(
                 text: HijriCalendar.now()
                     .toFormat("dd MMMM yyyy ${S.of(context).Hijri}"),
-                textStyle: Constants.headingTitle2,
+                textStyle: Theme.of(context).textTheme.headlineMedium!,
                 boxConstraints:
                     BoxConstraints(maxWidth: 0.6.sw, maxHeight: 0.05.sh),
               ),
@@ -73,7 +73,7 @@ class PrayersTimeWidget extends StatelessWidget {
                 boxConstraints:
                     BoxConstraints(maxWidth: 0.5.sw, maxHeight: 0.03.sh),
                 text: address,
-                textStyle: Constants.headingCaption,
+                textStyle: Theme.of(context).textTheme.headlineSmall!,
               ),
               SizedBox(
                 width: 10.w,
@@ -86,7 +86,6 @@ class PrayersTimeWidget extends StatelessWidget {
                 },
                 child: Icon(
                   TablerIcons.repeat,
-                  color: Colors.white,
                   size: 15.sp,
                 ),
               ),
@@ -106,20 +105,20 @@ class PrayersTimeWidget extends StatelessWidget {
                           ? Prayer.fajr.name
                           : prayerTimes.nextPrayer().name,
                       context),
-                  style: Constants.headingCaption,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(
                   DateFormat.jm(S.of(context).Language).format(
                       prayerTimes.timeForPrayer(prayerTimes.nextPrayer()) ??
                           nextFajr),
-                  style: Constants.headingTitle1,
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Text(
                   "${S.of(context).TimeLeft} "
                   "${remainingTime.inHours > 0 ? "${remainingTime.inHours} ${S.of(context).Hour}${remainingTime.inHours > 1 && S.of(context).Language == "en" ? 's' : ''} " : ""}"
                   "${remainingTime.inMinutes > 0 ? "${remainingTime.inMinutes % 60} ${S.of(context).Minute}${remainingTime.inMinutes > 1 && S.of(context).Language == "en" ? 's' : ''} " : ""}"
                   "${remainingTime.inHours == 0 ? "${remainingTime.inSeconds % 60} ${S.of(context).Second}${remainingTime.inSeconds > 1 && S.of(context).Language == "en" ? 's' : ''} " : ""}",
-                  style: Constants.headingCaption,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ],
             ),
@@ -133,7 +132,7 @@ class PrayersTimeWidget extends StatelessWidget {
             children: [
               const Spacer(),
               prayerTimeCard(prayerTimes.fajr, S.of(context).Fajr,
-                  TablerIcons.sun_moon, context),
+                  TablerIcons.sun_moon, context,),
               const Spacer(),
               prayerTimeCard(prayerTimes.dhuhr, S.of(context).Dhuhr,
                   TablerIcons.sun_filled, context),
@@ -183,19 +182,18 @@ Widget prayerTimeCard(
       children: [
         Text(
           prayerName,
-          style: Constants.headingSmall,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         Padding(
           padding: const EdgeInsets.all(10),
           child: Icon(
             icon,
-            color: Colors.white,
             size: 30.sp,
           ),
         ),
         Text(
           DateFormat.jm(S.of(context).Language).format(prayerTime!),
-          style: Constants.headingSmall,
+          style: Theme.of(context).textTheme.titleSmall,
         )
       ],
     );

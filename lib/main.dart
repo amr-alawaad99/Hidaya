@@ -1,3 +1,4 @@
+import 'package:Hidaya/screens/layout_screen/layout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,12 +68,83 @@ class MyApp extends StatelessWidget {
               supportedLocales: S.delegate.supportedLocales,
               debugShowCheckedModeBanner: false,
 
-              /// Theme
+              themeMode: context.read<MainCubit>().isDarkMode? ThemeMode.dark : ThemeMode.light,
+              /// Themes
               theme: ThemeData(
+                iconTheme: IconThemeData(color: Colors.white),
+                brightness: Brightness.light,
                 colorSchemeSeed: Constants.primaryColor,
-                useMaterial3: true,
+                textTheme: TextTheme(
+                  ///
+                  headlineLarge: TextStyle(
+                    fontSize: 40.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white
+                  ),
+                  headlineMedium: TextStyle(
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  // caption
+                  headlineSmall: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[200],
+                  ),
+                  titleSmall: TextStyle(
+                    fontSize: 15.sp,
+                    color: Colors.white,
+                  ),
+                  ///
+                  bodyLarge: TextStyle(
+                  fontSize: 30.sp,
+                  fontWeight: FontWeight.bold,
+                  ),
+                  bodySmall: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              home: const HomeScreen(),
+              darkTheme: ThemeData(
+                iconTheme: IconThemeData(color: Colors.black),
+                brightness: Brightness.dark,
+                colorSchemeSeed: Constants.primaryColor,
+                textTheme: TextTheme(
+                  ///
+                  headlineLarge: TextStyle(
+                      fontSize: 40.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black
+                  ),
+                  headlineMedium: TextStyle(
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  // caption
+                  headlineSmall: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[850],
+                  ),
+                  titleSmall: TextStyle(
+                    fontSize: 15.sp,
+                    color: Colors.black,
+                  ),
+                  ///
+                  bodyLarge: TextStyle(
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  bodySmall: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              home: const LayoutScreen(),
             );
           },
         ),

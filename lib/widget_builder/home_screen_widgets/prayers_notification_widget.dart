@@ -27,12 +27,12 @@ class PrayersNotificationWidget extends StatelessWidget {
           padding: EdgeInsets.all(15.sp),
           child: Text(
             S.of(context).PrayerNotification,
-            style: Constants.headingTitle2.copyWith(color: Colors.black),
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
         Container(
           height: 0.5,
-          color: Colors.black,
+          color: Theme.of(context).dividerColor,
         ),
         notificationCard(Prayer.fajr.name, context),
         notificationCard(Prayer.dhuhr.name, context),
@@ -56,7 +56,7 @@ Widget notificationCard(String prayerName, BuildContext context) => Container(
       padding: EdgeInsets.all(15.sp),
       decoration: BoxDecoration(
         border: BorderDirectional(
-          bottom: BorderSide(color: Colors.black, width: 0.5.w),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 0.5.w),
         ),
       ),
       child: Row(
@@ -65,7 +65,7 @@ Widget notificationCard(String prayerName, BuildContext context) => Container(
           Expanded(
               child: Text(
             ar_enPrayerName(prayerName, context),
-            style: Constants.headingCaption.copyWith(color: Colors.black),
+            style: Theme.of(context).textTheme.bodySmall,
           )),
           /// Turn notification on/off switch
           Switch(

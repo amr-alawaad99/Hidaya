@@ -23,9 +23,11 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "Asr": MessageLookupByLibrary.simpleMessage("العصر"),
+        "DarkMode": MessageLookupByLibrary.simpleMessage("الوضع الليلي"),
         "Dhuhr": MessageLookupByLibrary.simpleMessage("الظهر"),
         "Fajr": MessageLookupByLibrary.simpleMessage("الفجر"),
         "Hijri": MessageLookupByLibrary.simpleMessage("هـ"),
+        "Home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
         "Hour": MessageLookupByLibrary.simpleMessage("ساعة"),
         "Isha": MessageLookupByLibrary.simpleMessage("العشاء"),
         "Language": MessageLookupByLibrary.simpleMessage("ar"),
@@ -38,7 +40,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "PermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
             "تم منع الوصول إلى الموقع, برجاء منح إذن الوصول من إعدادات التطبيق."),
         "PrayerNotification": MessageLookupByLibrary.simpleMessage("الإشعارات"),
+        "Qibla": MessageLookupByLibrary.simpleMessage("القِبلة"),
         "Second": MessageLookupByLibrary.simpleMessage("ثانية"),
+        "Settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
         "Sunrise": MessageLookupByLibrary.simpleMessage("الشروق"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("متبقي")
       };
