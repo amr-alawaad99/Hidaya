@@ -99,7 +99,8 @@ flutter:
   assets:
     - assets/images/background.png
     - assets/ringtones/azan.mp3
-    - assets/images/qiblah.png
+    - assets/images/qiblah_light.png
+    - assets/images/qiblah_dark.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

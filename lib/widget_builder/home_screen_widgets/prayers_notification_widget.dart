@@ -69,7 +69,7 @@ Widget notificationCard(String prayerName, BuildContext context) => Container(
           )),
           /// Turn notification on/off switch
           Switch(
-            value: context.read<MainCubit>().prayerNotifications[prayerName]!,
+            value: context.watch<MainCubit>().prayerNotifications[prayerName]!,
             onChanged: (value) async {
               bool? areNotificationsEnabled = await context.read<MainCubit>().requestNotificationPermission();
               if (areNotificationsEnabled!) {

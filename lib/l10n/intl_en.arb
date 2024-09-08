@@ -18,7 +18,27 @@
   "Home" : "Home",
   "Qibla" : "Qibla",
   "Settings" : "Settings",
-  "DarkMode" : "DarkMode"
+  "DarkMode" : "DarkMode",
+  "HourlyNotification" : "Hourly Notifications",
+  "CalculationMethod" : "Calculation method",
+  "EgyptianGeneralAuthorityOfSurvey" : "Egyptian General Authority of Survey",
+  "MuslimWorldLeague" : "Muslim World League",
+  "UniversityOfIslamicSciencesKarachi" : "University of Islamic Sciences, Karachi",
+  "UmmAlQuraUniversityMakkah" : "Umm al-Qura University, Makkah",
+  "UAE" : "UAE",
+  "Qatar" : "Qatar",
+  "Kuwait" : "Kuwait",
+  "MoonsightingCommittee" : "Moonsighting Committee",
+  "Singapore" : "Singapore",
+  "IslamicSocietyOfNorthAmerica" : "Islamic Society of North America",
+  "Turkey" : "Turkey",
+  "Tehran" : "Tehran",
+  "AsrMethod" : "Asr method",
+  "Shafi" : "Shafi",
+  "Hanafi" : "Hanafi",
+  "RecommendedSettings" : "Recommended settings"
+
+
 
 
 

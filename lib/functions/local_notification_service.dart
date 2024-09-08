@@ -67,8 +67,6 @@ class LocalNotificationService{
       details,
       androidScheduleMode:AndroidScheduleMode.exactAllowWhileIdle,
     );
-    // save that u called the periodic notification method before
-    CacheHelper().saveData(key: "periodicNotification", value: true);
   }
 
   /// Send scheduled notification at date/time X

@@ -12,3 +12,7 @@ final class CurrentPageChangedState extends MainState{}
 
 final class SwitchThemeModeState extends MainState{}
 
+final class SwitchHourlyNotificationsState extends MainState{}
+
+final class SwitchRecommendedSettingsState extends MainState{}
+

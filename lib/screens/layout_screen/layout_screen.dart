@@ -15,28 +15,30 @@ class LayoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MainCubit, MainState>(
   builder: (context, state) {
-    return Scaffold(
-      body: context.read<MainCubit>().pages[context.read<MainCubit>().currentPage],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: context.read<MainCubit>().currentPage,
-        height: 80.h,
-        onDestinationSelected: (value) {
-          context.read<MainCubit>().changeCurrentPage(value);
-        },
-        destinations: [
-          NavigationDestination(
-            icon: Icon(TablerIcons.home),
-            label: S.of(context).Home,
-          ),
-          NavigationDestination(
-            icon: Icon(TablerIcons.compass),
-            label: S.of(context).Qibla,
-          ),
-          NavigationDestination(
-            icon: Icon(TablerIcons.settings),
-            label: S.of(context).Settings,
-          ),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: context.read<MainCubit>().pages[context.read<MainCubit>().currentPage],
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: context.read<MainCubit>().currentPage,
+          height: 80.h,
+          onDestinationSelected: (value) {
+            context.read<MainCubit>().changeCurrentPage(value);
+          },
+          destinations: [
+            NavigationDestination(
+              icon: Icon(TablerIcons.home),
+              label: S.of(context).Home,
+            ),
+            NavigationDestination(
+              icon: Icon(TablerIcons.compass),
+              label: S.of(context).Qibla,
+            ),
+            NavigationDestination(
+              icon: Icon(TablerIcons.settings),
+              label: S.of(context).Settings,
+            ),
+          ],
+        ),
       ),
     );
   },

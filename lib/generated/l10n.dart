@@ -249,6 +249,186 @@ class S {
       args: [],
     );
   }
+
+  /// `Hourly Notifications`
+  String get HourlyNotification {
+    return Intl.message(
+      'Hourly Notifications',
+      name: 'HourlyNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculation method`
+  String get CalculationMethod {
+    return Intl.message(
+      'Calculation method',
+      name: 'CalculationMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Egyptian General Authority of Survey`
+  String get EgyptianGeneralAuthorityOfSurvey {
+    return Intl.message(
+      'Egyptian General Authority of Survey',
+      name: 'EgyptianGeneralAuthorityOfSurvey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Muslim World League`
+  String get MuslimWorldLeague {
+    return Intl.message(
+      'Muslim World League',
+      name: 'MuslimWorldLeague',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `University of Islamic Sciences, Karachi`
+  String get UniversityOfIslamicSciencesKarachi {
+    return Intl.message(
+      'University of Islamic Sciences, Karachi',
+      name: 'UniversityOfIslamicSciencesKarachi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Umm al-Qura University, Makkah`
+  String get UmmAlQuraUniversityMakkah {
+    return Intl.message(
+      'Umm al-Qura University, Makkah',
+      name: 'UmmAlQuraUniversityMakkah',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `UAE`
+  String get UAE {
+    return Intl.message(
+      'UAE',
+      name: 'UAE',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Qatar`
+  String get Qatar {
+    return Intl.message(
+      'Qatar',
+      name: 'Qatar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Kuwait`
+  String get Kuwait {
+    return Intl.message(
+      'Kuwait',
+      name: 'Kuwait',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Moonsighting Committee`
+  String get MoonsightingCommittee {
+    return Intl.message(
+      'Moonsighting Committee',
+      name: 'MoonsightingCommittee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Singapore`
+  String get Singapore {
+    return Intl.message(
+      'Singapore',
+      name: 'Singapore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Islamic Society of North America`
+  String get IslamicSocietyOfNorthAmerica {
+    return Intl.message(
+      'Islamic Society of North America',
+      name: 'IslamicSocietyOfNorthAmerica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turkey`
+  String get Turkey {
+    return Intl.message(
+      'Turkey',
+      name: 'Turkey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tehran`
+  String get Tehran {
+    return Intl.message(
+      'Tehran',
+      name: 'Tehran',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Asr method`
+  String get AsrMethod {
+    return Intl.message(
+      'Asr method',
+      name: 'AsrMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shafi`
+  String get Shafi {
+    return Intl.message(
+      'Shafi',
+      name: 'Shafi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hanafi`
+  String get Hanafi {
+    return Intl.message(
+      'Hanafi',
+      name: 'Hanafi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recommended settings`
+  String get RecommendedSettings {
+    return Intl.message(
+      'Recommended settings',
+      name: 'RecommendedSettings',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

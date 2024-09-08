@@ -10,7 +10,6 @@ import 'package:Hidaya/cubit/main_cubit.dart';
 import 'package:Hidaya/cubit/main_state.dart';
 import 'package:Hidaya/functions/work_manager_service.dart';
 import 'package:Hidaya/generated/l10n.dart';
-import 'package:Hidaya/screens/home_screen.dart';
 import 'cache/cache_helper.dart';
 import 'constants/bloc_observer.dart';
 
@@ -30,12 +29,6 @@ Future<void> main() async {
   ]);
 
   Bloc.observer = MyBlocObserver();
-
-  bool isPeriodicNotificationOn =
-      CacheHelper().getData(key: "periodicNotification") ?? false;
-  if (!isPeriodicNotificationOn) {
-    LocalNotificationService.showPeriodicNotification();
-  }
 
   runApp(
     const MyApp(),
@@ -58,7 +51,7 @@ class MyApp extends StatelessWidget {
           builder: (context, state) {
             return MaterialApp(
               /// Localization
-              locale: Locale(context.read<MainCubit>().localLang),
+              locale: Locale(context.watch<MainCubit>().localLang),
               localizationsDelegates: const [
                 S.delegate,
                 GlobalMaterialLocalizations.delegate,
@@ -68,7 +61,7 @@ class MyApp extends StatelessWidget {
               supportedLocales: S.delegate.supportedLocales,
               debugShowCheckedModeBanner: false,
 
-              themeMode: context.read<MainCubit>().isDarkMode? ThemeMode.dark : ThemeMode.light,
+              themeMode: CacheHelper().getData(key: "isDarkMode")?? false? ThemeMode.dark : ThemeMode.light,
               /// Themes
               theme: ThemeData(
                 iconTheme: IconThemeData(color: Colors.white),

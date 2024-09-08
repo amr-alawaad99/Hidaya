@@ -1,9 +1,10 @@
 import 'dart:math';
+import 'package:Hidaya/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import '../generated/l10n.dart';
 
 class QiblaScreen extends StatefulWidget {
   const QiblaScreen({super.key});
@@ -12,91 +13,87 @@ class QiblaScreen extends StatefulWidget {
   State<QiblaScreen> createState() => _QiblaScreenState();
 }
 
-Animation<double>? animation;
-AnimationController? _animationController;
-double begin = 0.0;
-
-class _QiblaScreenState extends State<QiblaScreen> with SingleTickerProviderStateMixin {
+class _QiblaScreenState extends State<QiblaScreen> {
   @override
-  void initState() {
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500),);
-    animation = Tween(begin: 0.0, end: 0.0).animate(_animationController!);
-    super.initState();
+  void dispose() {
+    FlutterQiblah().dispose(); // Dispose the Qiblah Stream
+    super.dispose();
   }
 
-  bool hasPermission = false;
-
-  Future getPermission() async {
+  Future<bool> getPermission() async {
     if (await Permission.location.serviceStatus.isEnabled) {
       var status = await Permission.location.status;
       if (status.isGranted) {
-        hasPermission = true;
+        return true;
       } else {
-        Permission.location.request().then((value) {
-          setState(() {
-            hasPermission = (value == PermissionStatus.granted);
-          });
-        });
+        var result = await Permission.location.request();
+        return result == PermissionStatus.granted;
       }
     }
-  }
-
-  @override
-  void dispose() {
-    _animationController?.dispose();
-    super.dispose();
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    print(hasPermission);
-    return SafeArea(
-      child: FutureBuilder(
-        future: getPermission(),
-        builder: (context, snapshot) {
-          if (hasPermission) {
-            return Scaffold(
-              body: StreamBuilder(
-                stream: FlutterQiblah.qiblahStream,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(alignment: Alignment.center, child: const CircularProgressIndicator(color: Colors.white,));
-                  }
+    final brightness = Theme.of(context).brightness;
 
+    return FutureBuilder<bool>(
+      future: getPermission(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        else if (snapshot.hasData && snapshot.data == true) {
+          return Scaffold(
+            body: StreamBuilder<QiblahDirection>(
+              stream: FlutterQiblah.qiblahStream, // The Qiblah stream
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                else if (snapshot.hasData) {
                   final qiblahDirection = snapshot.data;
-                  animation = Tween(begin: begin, end: (qiblahDirection!.qiblah * (pi / 180) * -1)).animate(_animationController!);
-                  begin = (qiblahDirection.qiblah * (pi / 180) * -1);
-                  _animationController!.forward(from: 0);
-
+                  double angle = (qiblahDirection!.qiblah * (pi / 180) * -1);
                   return Center(
                     child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Text(
-                          //   "${qiblahDirection.direction.toInt()}°",
-                          //   style: const TextStyle(color: Colors.white, fontSize: 24),
-                          // ),
-                          Icon(Icons.arrow_drop_down_sharp, size: 130.sp, color: Colors.white,),
-
-                          SizedBox(
-                              height: 350.h,
-                              child: AnimatedBuilder(
-                                animation: animation!,
-                                builder: (context, child) => Transform.rotate(
-                                    angle: animation!.value,
-                                    child: Image.asset('assets/images/qiblah.png')),
-                              ))
-                        ]),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.arrow_drop_down_sharp,
+                          size: 130.sp,
+                          color: brightness == Brightness.light
+                              ? Constants.primaryColor
+                              : Colors.white,
+                        ),
+                        SizedBox(
+                          height: 350.h,
+                          child: Transform.rotate(
+                            angle: angle,
+                            child: brightness == Brightness.light
+                                ? Image.asset('assets/images/qiblah_light.png')
+                                : Image.asset('assets/images/qiblah_dark.png'),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
-                },
-              ),
-            );
-          } else {
-            return const Scaffold(
-              backgroundColor: Color.fromARGB(255, 48, 48, 48),
-            );
-          }
-        },
-      ));
+                }
+                else {
+                  return const Center(child: Text("No Data"));
+                }
+              },
+            ),
+          );
+        }
+        else {
+          return Center(
+            child: Text(
+              S.of(context).PermissionDeniedMessage,
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
+      },
+    );
   }
 }
