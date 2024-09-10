@@ -16,3 +16,7 @@ final class SwitchHourlyNotificationsState extends MainState{}
 
 final class SwitchRecommendedSettingsState extends MainState{}
 
+final class ChangeCalculationMethodState extends MainState{}
+
+final class ChangeMadhabState extends MainState{}
+

@@ -3,6 +3,7 @@ import 'package:Hidaya/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../generated/l10n.dart';
 
@@ -56,8 +57,26 @@ class _QiblaScreenState extends State<QiblaScreen> {
                   double angle = (qiblahDirection!.qiblah * (pi / 180) * -1);
                   return Center(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        SizedBox(height: 50.h,),
+                        MaterialButton(
+                          color: Constants.primaryColor,
+                          onPressed: () {
+                            showDialog(context: context, builder: (context) => Dialog(
+                              child: Image.asset("assets/images/calibrate_compass.gif",),
+                            ),
+                            );
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(S.of(context).CompassCalibration, style: Theme.of(context).textTheme.bodySmall,),
+                              SizedBox(width: 10.w,),
+                              Icon(TablerIcons.compass, size: 30.sp,),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 50.h,),
                         Icon(
                           Icons.arrow_drop_down_sharp,
                           size: 130.sp,

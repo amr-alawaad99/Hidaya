@@ -98,6 +98,9 @@ class MyApp extends StatelessWidget {
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
+                  labelMedium: TextStyle(
+                    fontSize: 14.sp,
+                  ),
                 ),
               ),
               darkTheme: ThemeData(
@@ -134,6 +137,9 @@ class MyApp extends StatelessWidget {
                   bodySmall: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
+                  ),
+                  labelMedium: TextStyle(
+                    fontSize: 14.sp,
                   ),
                 ),
               ),

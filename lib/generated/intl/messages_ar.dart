@@ -25,8 +25,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "Asr": MessageLookupByLibrary.simpleMessage("العصر"),
         "AsrMethod":
             MessageLookupByLibrary.simpleMessage("طريقة حساب توقيت العصر"),
+        "AsrMethodDescription": MessageLookupByLibrary.simpleMessage(
+            "حساب وقت صلاة العصر:\n\nهناك اختلاف بسيط في حساب وقت صلاة العصر بين المذاهب الأربعة.\nففي المذهب الشافعي، والمالكي، والحنبلي فيدخل وقت صلاة العصر عندما يصبح طول ظل كل شيء مِثلَه.\nأما في المذهب الحنفي فيدخل وقت صلاة العصر عندما يصبح ظل كل شيء مِثلَيه."),
         "CalculationMethod":
             MessageLookupByLibrary.simpleMessage("طريقة حساب مواقيت الصلاة"),
+        "CalculationMethodDescription": MessageLookupByLibrary.simpleMessage(
+            "هناك عدة مراجع لحساب أوقات الصلاة، والاختلاف الأساسي بين طرق حساب أوقات الصلاة هو في صلاة الفجر والعشاء، وذلك لأن الشمس لا تُرى عند الفجر والعشاء فيعتمد حسابهما على ظهور الشفق الأحمر وغيابه وعلى زاوية الشمس تحت الأفق.\nهناك العديد من الطرق التي تم اعتمادها بشكل رسمي في معظم دول العالم، نذكر منها:\n\n•\tرابطة العالم الإسلامي: تعتمد زاوية 18° للفجر و17° للعشاء.\n\n•\tالهيئة المصرية العامة للمساحة: تعتمد زاوية 19.5° للفجر و17.5° للعشاء.\n\n•\tجامعة العلوم الإسلامية، كراتشي: تعتمد زاوية 18° لكل من الفجر والعشاء.\n\n•\tجامعة أم القرى، مكة: تعتمد زاوية 18° للفجر وفترة زمنية ثابتة 90 دقيقة للعشاء (مع إضافة 30 دقيقة إضافية في رمضان).\n\n•\tطريقة الإمارات العربية المتحدة: تعتمد زاوية 18.2° للفجر والعشاء.\n\n•\tقطر: نسخة معدلة من طريقة أم القرى، تعتمد زاوية 18° للفجر وفترة زمنية ثابتة 90 دقيقة للعشاء.\n\n•\tالكويت: تعتمد زاوية 18° للفجر و17.5° للعشاء.\n\n•\tلجنة مراقبة الهلال: تعتمد زاوية 18° لكل من الفجر والعشاء مع تعديلات موسمية.\n\n•\tطريقة سنغافورة: تعتمد زاوية 20° للفجر و18° للعشاء.\n\n•\tطريقة أمريكا الشمالية (ISNA): تعتمد زاوية 15° لكل من الفجر والعشاء.\n\n•\tتركيا: تعتمد زاوية 18° للفجر و17° للعشاء.\n\n•\tطهران: تعتمد زاوية 17.7° للفجر و14° للعشاء و4.5° للمغرب.\n\nوكل من هذه الطرق تعتمد على حساب زاوية مختلفة للشمس تحت الأفق لتحديد صلاتي الفجر والعشاء.\n"),
+        "CompassCalibration":
+            MessageLookupByLibrary.simpleMessage("طريقة إعادة معايرة البوصلة"),
         "DarkMode": MessageLookupByLibrary.simpleMessage("الوضع الليلي"),
         "Dhuhr": MessageLookupByLibrary.simpleMessage("الظهر"),
         "EgyptianGeneralAuthorityOfSurvey":
@@ -39,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Hour": MessageLookupByLibrary.simpleMessage("ساعة"),
         "HourlyNotification":
             MessageLookupByLibrary.simpleMessage("الإشعارات التذكيرية"),
+        "HourlyNotificationDescription":
+            MessageLookupByLibrary.simpleMessage("إشعار الصلاة على النبي ﷺ"),
         "Isha": MessageLookupByLibrary.simpleMessage("العشاء"),
         "IslamicSocietyOfNorthAmerica": MessageLookupByLibrary.simpleMessage(
             "الجمعية الإسلامية لأمريكا الشمالية"),
@@ -63,7 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الإعدادات الموصى بها"),
         "Second": MessageLookupByLibrary.simpleMessage("ثانية"),
         "Settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
-        "Shafi": MessageLookupByLibrary.simpleMessage("المذهب الشافعي"),
+        "Shafi": MessageLookupByLibrary.simpleMessage(
+            "المذهب الشافعي، المالكي، الحنبلي"),
         "Singapore": MessageLookupByLibrary.simpleMessage("سنغافورة"),
         "Sunrise": MessageLookupByLibrary.simpleMessage("الشروق"),
         "Tehran": MessageLookupByLibrary.simpleMessage("طهران"),

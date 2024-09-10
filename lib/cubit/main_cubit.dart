@@ -1,14 +1,15 @@
-import 'dart:convert';
-
+import 'package:Hidaya/functions/prayer_times_manager.dart';
 import 'package:Hidaya/screens/home_screen.dart';
 import 'package:Hidaya/screens/qibla_screen.dart';
 import 'package:Hidaya/screens/settings_screen.dart';
+import 'package:adhan/adhan.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Hidaya/cache/cache_helper.dart';
 import 'package:Hidaya/functions/local_notification_service.dart';
 import 'package:Hidaya/cubit/main_state.dart';
+
+import '../generated/l10n.dart';
 
 class MainCubit extends Cubit<MainState> {
   MainCubit() : super(MainInitState());
@@ -36,7 +37,8 @@ class MainCubit extends Cubit<MainState> {
   }
 
   Future<bool?> requestNotificationPermission() async {
-    bool? areEnabled = await LocalNotificationService.requestNotificationPermission;
+    bool? areEnabled =
+        await LocalNotificationService.requestNotificationPermission;
     emit(RequestNotificationPermissionState());
     return areEnabled;
   }
@@ -60,24 +62,61 @@ class MainCubit extends Cubit<MainState> {
     emit(SwitchThemeModeState());
   }
 
-  bool isHourlyNotificationsOn = CacheHelper().getData(key: "isHourlyNotificationsOn") ?? false;
+  bool isHourlyNotificationsOn =
+      CacheHelper().getData(key: "isHourlyNotificationsOn") ?? false;
   void switchHourlyNotifications() {
     isHourlyNotificationsOn = !isHourlyNotificationsOn;
-    if (isHourlyNotificationsOn){
+    if (isHourlyNotificationsOn) {
       LocalNotificationService.showPeriodicNotification();
-    }
-    else{
+    } else {
       LocalNotificationService.cancelNotification(6);
     }
     CacheHelper().saveData(key: "isHourlyNotificationsOn", value: isHourlyNotificationsOn);
-    print(isHourlyNotificationsOn);
     emit(SwitchHourlyNotificationsState());
   }
 
-  bool isRecommendedSettingsOn = CacheHelper().getData(key: "isRecommendedSettingsOn")?? true;
-  void switchRecommendedSettings(){
+  bool isRecommendedSettingsOn = CacheHelper().getData(key: "isRecommendedSettingsOn") ?? true;
+  void switchRecommendedSettings() {
     isRecommendedSettingsOn = !isRecommendedSettingsOn;
-    CacheHelper().saveData(key: "isRecommendedSettingsOn", value: isDarkMode);
+    CacheHelper().saveData(key: "isRecommendedSettingsOn", value: isRecommendedSettingsOn);
     emit(SwitchRecommendedSettingsState());
   }
+
+  // Returns a map of calculation methods and their labels
+  Map<String, String> calculationMethodMap(BuildContext context) => {
+    CalculationMethod.egyptian.name: S.of(context).EgyptianGeneralAuthorityOfSurvey,
+    CalculationMethod.muslim_world_league.name: S.of(context).MuslimWorldLeague,
+    CalculationMethod.karachi.name: S.of(context).UniversityOfIslamicSciencesKarachi,
+    CalculationMethod.umm_al_qura.name: S.of(context).UmmAlQuraUniversityMakkah,
+    CalculationMethod.qatar.name: S.of(context).Qatar,
+    CalculationMethod.kuwait.name: S.of(context).Kuwait,
+    CalculationMethod.moon_sighting_committee.name: S.of(context).MoonsightingCommittee,
+    CalculationMethod.singapore.name: S.of(context).Singapore,
+    CalculationMethod.north_america.name: S.of(context).IslamicSocietyOfNorthAmerica,
+    CalculationMethod.turkey.name: S.of(context).Turkey,
+    CalculationMethod.tehran.name: S.of(context).Tehran,
+    CalculationMethod.dubai.name: S.of(context).UAE,
+  };
+
+  // Initial method for prayer calculation
+  CalculationMethod initialMethod = PrayerTimesManager().params.method;
+
+  // Change the calculation method and store it
+  void changeCalculationMethod(CalculationMethod method) {
+    initialMethod = method;
+    CacheHelper().saveData(key: "CalculationMethod", value: method.name);
+    emit(ChangeCalculationMethodState());
+  }
+
+  // Initial method for prayer madhab
+  Madhab initialMadhab = PrayerTimesManager().params.madhab;
+
+  // Change the calculation method and store it
+  void changeMadhab(Madhab madhab) {
+    initialMadhab = madhab;
+    CacheHelper().saveData(key: "Madhab", value: madhab.name);
+    emit(ChangeMadhabState());
+  }
+
+
 }

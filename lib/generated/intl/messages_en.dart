@@ -24,8 +24,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "Asr": MessageLookupByLibrary.simpleMessage("Asr"),
         "AsrMethod": MessageLookupByLibrary.simpleMessage("Asr method"),
+        "AsrMethodDescription": MessageLookupByLibrary.simpleMessage(
+            "Calculating the time for Asr prayer:\n\nThere is a slight difference in calculating the time for Asr prayer among the four schools of thought.\nIn the Shafi\'i, Maliki, and Hanbali schools, the time for Asr prayer begins when the shadow of everything becomes equal to its length.\nHowever, in the Hanafi school, the time for Asr prayer begins when the shadow of everything becomes twice its length."),
         "CalculationMethod":
             MessageLookupByLibrary.simpleMessage("Calculation method"),
+        "CalculationMethodDescription": MessageLookupByLibrary.simpleMessage(
+            "There are several references for calculating prayer times, and the main difference between these methods lies in the calculation of Fajr and Isha prayers. This is because the sun is not visible during Fajr and Isha, so their calculation depends on the appearance and disappearance of the red twilight and the angle of the sun below the horizon.\nThere are several methods officially adopted in most countries worldwide, including:\n\n•\tMuslim World League: Uses a Fajr angle of 18° and an Isha angle of 17°.\n\n•\tEgyptian General Authority of Survey: Uses a Fajr angle of 19.5° and an Isha angle of 17.5°.\n\n•\tUniversity of Islamic Sciences, Karachi: Uses a Fajr angle of 18° and an Isha angle of 18°.\n\n•\tUmm al-Qura University, Makkah: Uses a Fajr angle of 18° and a fixed interval of 90 minutes for Isha (with a 30-minute addition during Ramadan).\n\n•\tMethod used in UAE: Uses Fajr and Isha angles of 18.2°.\n\n•\tQatar: A modified version of the Umm al-Qura method, using a Fajr angle of 18° and a fixed 90-minute interval for Isha.\n\n•\tKuwait: Uses a Fajr angle of 18° and an Isha angle of 17.5°.\n\n•\tMoonsighting Committee: Uses a Fajr angle of 18° and an Isha angle of 18°, with seasonal adjustments.\n\n•\tSingapore: Uses a Fajr angle of 20° and an Isha angle of 18°.\n\n•\tNorth America (ISNA): Uses a Fajr angle of 15° and an Isha angle of 15° (not recommended).\n\n•\tTurkey: Uses a Fajr angle of 18° and an Isha angle of 17°.\n\n•\tTehran: Uses a Fajr angle of 17.7°, an Isha angle of 14°, and a Maghrib angle of 4.5°.\n\nEach of these methods relies on a different sun angle below the horizon to determine the times for Fajr and Isha prayers.\n"),
+        "CompassCalibration": MessageLookupByLibrary.simpleMessage(
+            "How to calibrate your compass"),
         "DarkMode": MessageLookupByLibrary.simpleMessage("DarkMode"),
         "Dhuhr": MessageLookupByLibrary.simpleMessage("Dhuhr"),
         "EgyptianGeneralAuthorityOfSurvey":
@@ -38,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Hour": MessageLookupByLibrary.simpleMessage("Hour"),
         "HourlyNotification":
             MessageLookupByLibrary.simpleMessage("Hourly Notifications"),
+        "HourlyNotificationDescription":
+            MessageLookupByLibrary.simpleMessage(""),
         "Isha": MessageLookupByLibrary.simpleMessage("Isha"),
         "IslamicSocietyOfNorthAmerica": MessageLookupByLibrary.simpleMessage(
             "Islamic Society of North America"),

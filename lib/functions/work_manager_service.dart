@@ -1,7 +1,7 @@
+import 'package:Hidaya/functions/prayer_times_manager.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:Hidaya/cache/cache_helper.dart';
 import 'package:Hidaya/functions/local_notification_service.dart';
-import 'package:Hidaya/screens/home_screen.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -49,8 +49,8 @@ class WorkManagerService{
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     await CacheHelper().init();
-    DateTime currentPrayer = HomeScreenState().prayerTime(inputData!["prayerName"])!;
-    DateTime nextPrayer = HomeScreenState().nextDayPrayerTime(inputData["prayerName"])!;
+    DateTime currentPrayer = PrayerTimesManager().prayerTime(inputData!["prayerName"])!;
+    DateTime nextPrayer = PrayerTimesManager().nextDayPrayerTime(inputData["prayerName"])!;
     tz.initializeTimeZones();
     // Get the local timezone identifier (e.g., 'Africa/Cairo')
     final String currentTimeZone = await FlutterTimezone.getLocalTimezone();

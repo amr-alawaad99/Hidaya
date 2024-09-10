@@ -1,3 +1,6 @@
+import 'package:Hidaya/functions/prayer_times_manager.dart';
+import 'package:adhan/adhan.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,96 +34,146 @@ class SettingsScreen extends StatelessWidget {
             ),
             Divider(),
             /// hourly Notification switch
-            Row(
+            Column(
               children: [
-                Icon(Icons.notifications_active_outlined, color: Colors.amber, size: 35.sp,),
-                SizedBox(width: 10.w,),
-                Expanded(child: Text(S.of(context).HourlyNotification, style: Theme.of(context).textTheme.bodySmall, maxLines: 1,overflow: TextOverflow.ellipsis,),),
-                Switch(
-                  value: context.watch<MainCubit>().isHourlyNotificationsOn,
-                  onChanged: (value) async {
-                    bool? areNotificationsEnabled = await context.read<MainCubit>().requestNotificationPermission();
-                    if (areNotificationsEnabled!) {
-                      context.read<MainCubit>().switchHourlyNotifications();
-                    } else if (!areNotificationsEnabled) {
-                      value = false;
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).NotificationsDisabled)));
-                    }
-                  },
+                Row(
+                  children: [
+                    Icon(Icons.notifications_active_outlined, color: Colors.amber, size: 35.sp,),
+                    SizedBox(width: 10.w,),
+                    Expanded(child: Text(S.of(context).HourlyNotification, style: Theme.of(context).textTheme.bodySmall, maxLines: 1,overflow: TextOverflow.ellipsis,),),
+                    Switch(
+                      value: context.watch<MainCubit>().isHourlyNotificationsOn,
+                      onChanged: (value) async {
+                        bool? areNotificationsEnabled = await context.read<MainCubit>().requestNotificationPermission();
+                        if (areNotificationsEnabled!) {
+                          context.read<MainCubit>().switchHourlyNotifications();
+                        } else if (!areNotificationsEnabled) {
+                          value = false;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).NotificationsDisabled)));
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                if(S.of(context).Language == "ar")
+                  Row(
+                  children: [
+                    SizedBox(width: 50.w,),
+                    Text(S.of(context).HourlyNotificationDescription, style: Theme.of(context).textTheme.labelMedium,),
+                  ],
                 ),
               ],
             ),
             Divider(),
             /// Recommended settings switch
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.settings, color: Colors.amber, size: 35.sp,),
-                SizedBox(width: 10.w,),
-                Expanded(child: Text(S.of(context).RecommendedSettings, style: Theme.of(context).textTheme.bodySmall, maxLines: 1,overflow: TextOverflow.ellipsis,),),
-                Switch(
-                  value: context.watch<MainCubit>().isRecommendedSettingsOn,
-                  onChanged: (value) async {
-                    context.read<MainCubit>().switchRecommendedSettings();
-                  },
+                Row(
+                  children: [
+                    Icon(Icons.settings, color: Colors.amber, size: 35.sp,),
+                    SizedBox(width: 10.w,),
+                    Expanded(child: Text(S.of(context).RecommendedSettings, style: Theme.of(context).textTheme.bodySmall, maxLines: 1,overflow: TextOverflow.ellipsis,),),
+                    Switch(
+                      value: context.watch<MainCubit>().isRecommendedSettingsOn,
+                      onChanged: (value) async {
+                        context.read<MainCubit>().switchRecommendedSettings();
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: 50.w,),
+                    Text(context.read<MainCubit>().calculationMethodMap(context)[PrayerTimesManager.getCalculationMethodParameters().method.name]!,
+                    style: Theme.of(context).textTheme.labelMedium),
+                    SizedBox(width: 10.w,),
+                    Icon(Icons.verified, color: CupertinoColors.activeGreen,),
+                  ],
                 ),
               ],
             ),
             Divider(),
-            /// Calculation Method
-            Row(
-              children: [
-                Text(S.of(context).CalculationMethod),
-                Spacer(),
-                IconButton(
-                  onPressed: () {}, 
-                  icon: Icon(Icons.info, color: Colors.amber,),
-                ),
-              ],
-            ),
-            /// Calculation Method Menu
-            DropdownMenu(
-              initialSelection: 1,
-              textStyle: Theme.of(context).textTheme.labelLarge,
-              menuHeight: 400.h,
-              width: double.infinity,
-              dropdownMenuEntries: [
-                DropdownMenuEntry(value: 1, label: S.of(context).EgyptianGeneralAuthorityOfSurvey),
-                DropdownMenuEntry(value: 2, label: S.of(context).MuslimWorldLeague),
-                DropdownMenuEntry(value: 3, label: S.of(context).UniversityOfIslamicSciencesKarachi),
-                DropdownMenuEntry(value: 4, label: S.of(context).UmmAlQuraUniversityMakkah),
-                DropdownMenuEntry(value: 5, label: S.of(context).UAE),
-                DropdownMenuEntry(value: 6, label: S.of(context).Qatar),
-                DropdownMenuEntry(value: 7, label: S.of(context).Kuwait),
-                DropdownMenuEntry(value: 8, label: S.of(context).MoonsightingCommittee),
-                DropdownMenuEntry(value: 9, label: S.of(context).Singapore),
-                DropdownMenuEntry(value: 10, label: S.of(context).IslamicSocietyOfNorthAmerica),
-                DropdownMenuEntry(value: 11, label: S.of(context).Turkey),
-                DropdownMenuEntry(value: 12, label: S.of(context).Tehran),
-              ],
-            ),
-            Divider(),
-            /// Asr Method
-            Row(
-              children: [
-                Text(S.of(context).AsrMethod),
-                Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.info, color: Colors.amber,),
-                ),
-              ],
-            ),
-            /// Asr Method Menu
-            DropdownMenu(
-              initialSelection: 1,
-              textStyle: Theme.of(context).textTheme.labelLarge,
-              width: double.infinity,
-              menuHeight: 400.h,
-              dropdownMenuEntries: [
-                DropdownMenuEntry(value: 1, label: S.of(context).Shafi),
-                DropdownMenuEntry(value: 2, label: S.of(context).Hanafi),
-              ],
-            ),
+            if(!context.watch<MainCubit>().isRecommendedSettingsOn) ...[
+              /// Calculation Method
+              Row(
+                children: [
+                  Text(S.of(context).CalculationMethod),
+                  Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(context: context, builder: (context) => Dialog(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.all(20.sp),
+                            child: Text(S.of(context).CalculationMethodDescription),
+                          ),
+                        ),
+                      ),);
+                    },
+                    icon: Icon(Icons.info, color: Colors.amber,),
+                  ),
+                ],
+              ),
+              /// Calculation Method Menu
+              DropdownMenu(
+                initialSelection: context.watch<MainCubit>().initialMethod,
+                textStyle: Theme.of(context).textTheme.labelLarge,
+                width: double.infinity,
+                onSelected: (value) {
+                  context.read<MainCubit>().changeCalculationMethod(value!);
+                },
+                dropdownMenuEntries: [
+                  DropdownMenuEntry(value: CalculationMethod.egyptian, label: S.of(context).EgyptianGeneralAuthorityOfSurvey),
+                  DropdownMenuEntry(value: CalculationMethod.north_america, label: S.of(context).IslamicSocietyOfNorthAmerica),
+                  DropdownMenuEntry(value: CalculationMethod.muslim_world_league, label: S.of(context).MuslimWorldLeague),
+                  DropdownMenuEntry(value: CalculationMethod.karachi, label: S.of(context).UniversityOfIslamicSciencesKarachi),
+                  DropdownMenuEntry(value: CalculationMethod.umm_al_qura, label: S.of(context).UmmAlQuraUniversityMakkah),
+                  DropdownMenuEntry(value: CalculationMethod.dubai, label: S.of(context).UAE),
+                  DropdownMenuEntry(value: CalculationMethod.qatar, label: S.of(context).Qatar),
+                  DropdownMenuEntry(value: CalculationMethod.kuwait, label: S.of(context).Kuwait),
+                  DropdownMenuEntry(value: CalculationMethod.moon_sighting_committee, label: S.of(context).MoonsightingCommittee),
+                  DropdownMenuEntry(value: CalculationMethod.singapore, label: S.of(context).Singapore),
+                  DropdownMenuEntry(value: CalculationMethod.turkey, label: S.of(context).Turkey),
+                  DropdownMenuEntry(value: CalculationMethod.tehran, label: S.of(context).Tehran),
+                ],
+              ),
+              Divider(),
+              /// Asr Method
+              Row(
+                children: [
+                  Text(S.of(context).AsrMethod),
+                  Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(context: context, builder: (context) => Dialog(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.all(20.sp),
+                            child: Text(S.of(context).AsrMethodDescription),
+                          ),
+                        ),
+                      ),);
+                    },
+                    icon: Icon(Icons.info, color: Colors.amber,),
+                  ),
+                ],
+              ),
+              /// Asr Method Menu
+              DropdownMenu(
+                initialSelection: context.watch<MainCubit>().initialMadhab,
+                textStyle: Theme.of(context).textTheme.labelLarge,
+                width: double.infinity,
+                menuHeight: 400.h,
+                onSelected: (value) {
+                  context.read<MainCubit>().changeMadhab(value!);
+                },
+                dropdownMenuEntries: [
+                  DropdownMenuEntry(value: Madhab.shafi, label: S.of(context).Shafi),
+                  DropdownMenuEntry(value: Madhab.hanafi, label: S.of(context).Hanafi),
+                ],
+              ),
+            ],
           ],
         ),
       ),
