@@ -73,6 +73,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "Shafi": MessageLookupByLibrary.simpleMessage("Shafi"),
         "Singapore": MessageLookupByLibrary.simpleMessage("Singapore"),
+        "SoundOnSilent": MessageLookupByLibrary.simpleMessage(
+            "Play notification sound even if the phone is on Silent mode"),
         "Sunrise": MessageLookupByLibrary.simpleMessage("Sunrise"),
         "Tehran": MessageLookupByLibrary.simpleMessage("Tehran"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("Time left"),
@@ -82,6 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Umm al-Qura University, Makkah"),
         "UniversityOfIslamicSciencesKarachi":
             MessageLookupByLibrary.simpleMessage(
-                "University of Islamic Sciences, Karachi")
+                "University of Islamic Sciences, Karachi"),
+        "isFullAzanOn": MessageLookupByLibrary.simpleMessage(
+            "Play full Azan sound for this prayer")
       };
 }

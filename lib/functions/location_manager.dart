@@ -25,7 +25,6 @@ class LocationManager {
       await getCurrentLocation();
     } else {
       await updateAddressFromCoordinates(lat!, long!);
-      // prayerTimesManager.updateCoordinates(Coordinates(lat!, long!));  // **Update prayer times after location update**
     }
   }
 

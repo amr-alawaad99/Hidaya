@@ -28,6 +28,7 @@ class HomeScreenState extends State<HomeScreen> {
     prayerTimesManager = PrayerTimesManager();
     locationManager = LocationManager(context, prayerTimesManager);
     locationManager.checkCurrentLocation();
+    locationManager.getCurrentLocation(); // updates your current location on opening the app
     _updateRemainingTime();
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       _updateRemainingTime();

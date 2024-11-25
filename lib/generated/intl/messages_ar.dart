@@ -74,6 +74,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Shafi": MessageLookupByLibrary.simpleMessage(
             "المذهب الشافعي، المالكي، الحنبلي"),
         "Singapore": MessageLookupByLibrary.simpleMessage("سنغافورة"),
+        "SoundOnSilent": MessageLookupByLibrary.simpleMessage(
+            "تشغيل صوت الأذان حتى في وضع الصامت"),
         "Sunrise": MessageLookupByLibrary.simpleMessage("الشروق"),
         "Tehran": MessageLookupByLibrary.simpleMessage("طهران"),
         "TimeLeft": MessageLookupByLibrary.simpleMessage("متبقي"),
@@ -83,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("جامعة أم القرى، مكة المكرمة"),
         "UniversityOfIslamicSciencesKarachi":
             MessageLookupByLibrary.simpleMessage(
-                "جامعة العلوم الإسلامية، كراتشي")
+                "جامعة العلوم الإسلامية، كراتشي"),
+        "isFullAzanOn": MessageLookupByLibrary.simpleMessage(
+            "تشغيل الأذان كاملاً لهذه الصلاة")
       };
 }

@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Constants {
   static Color primaryColor = const Color(0xff149d9d);
+}
+
+class SharedPrefConst{
+  static List<String> playSoundOnSilent = [
+    "playSoundOnSilentFajr",
+    "playSoundOnSilentDhuhr",
+    "playSoundOnSilentAsr",
+    "playSoundOnSilentMaghrib",
+    "playSoundOnSilentIsha",
+  ];
+  static List<String> isFullAzan = [
+    "isFullAzanFajr",
+    "isFullAzanDhuhr",
+    "isFullAzanAsr",
+    "isFullAzanMaghrib",
+    "isFullAzanIsha",
+  ];
 }
 
 ///

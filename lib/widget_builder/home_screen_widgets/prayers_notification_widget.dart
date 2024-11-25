@@ -19,7 +19,6 @@ class PrayersNotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CacheHelper().saveData(key: "a", value: prayerTime.fajr.toString());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -59,34 +58,82 @@ Widget notificationCard(String prayerName, BuildContext context) => Container(
           bottom: BorderSide(color: Theme.of(context).dividerColor, width: 0.5.w),
         ),
       ),
-      child: Row(
+      child: Column(
         children: [
-          /// prayer Name
-          Expanded(
-              child: Text(
-            ar_enPrayerName(prayerName, context),
-            style: Theme.of(context).textTheme.bodySmall,
-          )),
-          /// Turn notification on/off switch
-          Switch(
-            value: context.watch<MainCubit>().prayerNotifications[prayerName]!,
-            onChanged: (value) async {
-              bool? areNotificationsEnabled = await context.read<MainCubit>().requestNotificationPermission();
-              if (areNotificationsEnabled!) {
-                context.read<MainCubit>().toggleSwitch(isOn: value, prayerName: prayerName);
-                switch (value) {
-                  case true:
-                    WorkManagerService().registerMyTask(id: prayerId[prayerName]!, title: "صلاة ${ar_enPrayerName(prayerName, context)} - $prayerName prayer", prayerName: prayerName); // title example "صلاة الفحر - fajr prayer"
-                    return null;
-                  case false:
-                    LocalNotificationService.cancelNotification(prayerId[prayerName]!);
-                    WorkManagerService().cancelTask(prayerId[prayerName]!);
-                    return null;
-                }
-              } else if (!areNotificationsEnabled) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(S.of(context).NotificationsDisabled)));
-              }
+          GestureDetector(
+            onTap: () {
+              context.read<MainCubit>().changeWidgetVisibility(prayerId[prayerName]!);
             },
+            child: Row(
+              children: [
+                /// prayer Name
+                Expanded(
+                    child: Text(
+                  ar_enPrayerName(prayerName, context),
+                  style: Theme.of(context).textTheme.bodySmall,
+                )),
+                /// Turn notification on/off switch
+                Switch(
+                  value: context.watch<MainCubit>().prayerNotifications[prayerName]!,
+                  onChanged: (value) async {
+                    bool? areNotificationsEnabled = await context.read<MainCubit>().requestNotificationPermission();
+                    if (areNotificationsEnabled!) {
+                      context.read<MainCubit>().toggleSwitch(isOn: value, prayerName: prayerName);
+                      switch (value) {
+                        case true:
+                          WorkManagerService().registerMyTask(
+                            id: prayerId[prayerName]!,
+                            title: "صلاة ${ar_enPrayerName(prayerName, context)} - $prayerName prayer", // title example "صلاة الفحر - fajr prayer"
+                            prayerName: prayerName,
+                            isFullAzan: CacheHelper().getData(key: SharedPrefConst.isFullAzan[prayerId[prayerName]!])?? false,
+                            isSoundOnSilent: CacheHelper().getData(key: SharedPrefConst.playSoundOnSilent[prayerId[prayerName]!])?? false,
+                          );
+                          print(CacheHelper().getData(key: SharedPrefConst.isFullAzan[prayerId[prayerName]!]));
+                          print(CacheHelper().getData(key: SharedPrefConst.playSoundOnSilent[prayerId[prayerName]!]));
+                          return null;
+                        case false:
+                          LocalNotificationService.cancelNotification(prayerId[prayerName]!);
+                          WorkManagerService().cancelTask(prayerId[prayerName]!);
+                          return null;
+                      }
+                    } else if (!areNotificationsEnabled) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(S.of(context).NotificationsDisabled)));
+                    }
+                  },
+                ),
+                Icon(context.read<MainCubit>().isWidgetVisible[prayerId[prayerName]!]? Icons.keyboard_arrow_down : Icons.keyboard_arrow_left, color: Colors.black,),
+              ],
+            ),
+          ),
+          if(context.watch<MainCubit>().isWidgetVisible[prayerId[prayerName]!])
+          Column(
+            children: [
+              CheckboxListTile(
+                title: Text(
+                  S.of(context).isFullAzanOn,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.normal),
+                ),
+                contentPadding: EdgeInsets.zero,
+                value: CacheHelper().getData(key: SharedPrefConst.isFullAzan[prayerId[prayerName]!])?? false,
+                onChanged: (value) {
+                  CacheHelper().saveData(key: SharedPrefConst.isFullAzan[prayerId[prayerName]!], value: value);
+                  context.read<MainCubit>().update();
+                },
+              ),
+              CheckboxListTile(
+                title: Text(
+                  S.of(context).SoundOnSilent,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.normal),
+                ),
+                contentPadding: EdgeInsets.zero,
+                value: CacheHelper().getData(key: SharedPrefConst.playSoundOnSilent[prayerId[prayerName]!])?? false,
+                onChanged: (value) {
+                  CacheHelper().saveData(key: SharedPrefConst.playSoundOnSilent[prayerId[prayerName]!], value: value);
+                  context.read<MainCubit>().update();
+                },
+              ),
+            ],
           ),
         ],
       ),

@@ -20,3 +20,7 @@ final class ChangeCalculationMethodState extends MainState{}
 
 final class ChangeMadhabState extends MainState{}
 
+final class ChangeWidgetVisibility extends MainState{}
+
+final class UpdateState extends MainState{}
+

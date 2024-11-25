@@ -469,6 +469,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Play full Azan sound for this prayer`
+  String get isFullAzanOn {
+    return Intl.message(
+      'Play full Azan sound for this prayer',
+      name: 'isFullAzanOn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play notification sound even if the phone is on Silent mode`
+  String get SoundOnSilent {
+    return Intl.message(
+      'Play notification sound even if the phone is on Silent mode',
+      name: 'SoundOnSilent',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

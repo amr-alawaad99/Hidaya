@@ -47,5 +47,9 @@
 		<false/>
 		<key>NSLocationWhenInUseUsageDescription</key>
         <string>We need your location to provide better services.</string>
+        <key>UIBackgroundModes</key>
+        <array>
+            <string>fetch</string>
+        </array>
 	</dict>
 </plist>

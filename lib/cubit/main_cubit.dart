@@ -37,8 +37,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   Future<bool?> requestNotificationPermission() async {
-    bool? areEnabled =
-        await LocalNotificationService.requestNotificationPermission;
+    bool? areEnabled = await LocalNotificationService.requestNotificationPermission;
     emit(RequestNotificationPermissionState());
     return areEnabled;
   }
@@ -116,6 +115,16 @@ class MainCubit extends Cubit<MainState> {
     initialMadhab = madhab;
     CacheHelper().saveData(key: "Madhab", value: madhab.name);
     emit(ChangeMadhabState());
+  }
+
+  List<bool> isWidgetVisible = List.generate(5, (index) => false,);
+
+  void changeWidgetVisibility(int index){
+    isWidgetVisible[index] = !isWidgetVisible[index];
+    emit(ChangeWidgetVisibility());
+  }
+  void update(){
+    emit(UpdateState());
   }
 
 
